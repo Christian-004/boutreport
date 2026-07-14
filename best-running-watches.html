@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Best GPS Running Watches for Boxers — BoutReport</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<meta name="color-scheme" content="light">
+<style>
+  html{color-scheme: light only;}
+  :root{
+    --ink:#15110D; --ink-soft:#221C15; --canvas:#E7DFCE; --canvas-light:#F0EADD;
+    --oxblood:#7A2331; --oxblood-bright:#9C2E3F; --gold:#B9924A;
+    --steel:#4A463F; --steel-light:#7A7568; --win:#3E6B4F;
+    --rope-red:#8C2A2A; --rope-blue:#26425C; --card-border: rgba(21,17,13,0.12);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html, body{background-color:#E7DFCE !important;}
+  body{ color:#15110D !important; font-family:'Inter', sans-serif; line-height:1.5; -webkit-font-smoothing:antialiased; }
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 24px;}
+  .narrow{max-width:760px; margin:0 auto; padding:0 24px;}
+  .rope-line{
+    height:3px; width:100%;
+    background: linear-gradient(to right, var(--rope-red) 0 50%, var(--rope-blue) 50% 100%);
+    background-size: 24px 3px; opacity:0.85;
+  }
+  header{ position:sticky; top:0; z-index:50; background:var(--canvas); border-bottom:1px solid var(--card-border); }
+  .nav-inner{ display:flex; align-items:center; justify-content:space-between; padding:18px 24px; }
+  .logo{ font-family:'Anton', sans-serif; font-size:26px; display:flex; align-items:baseline; gap:2px; }
+  .logo .accent{ color:var(--oxblood); }
+  nav.links{display:flex; gap:8px;}
+  .nav-item{position:relative;}
+  .nav-link{
+    font-family:'Oswald', sans-serif;
+    font-size:14px;
+    font-weight:500;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--ink);
+    background:none; border:none; cursor:pointer;
+    display:flex; align-items:center; gap:5px;
+    padding:8px 12px;
+    position:relative;
+  }
+  .nav-link::after{
+    content:"";
+    position:absolute; left:12px; bottom:2px;
+    width:0; height:2px;
+    background:var(--oxblood);
+    transition:width 0.2s ease;
+  }
+  .nav-link:hover::after{width:calc(100% - 24px);}
+  .nav-link .caret{width:9px; height:9px; opacity:0.6; transition:transform 0.15s ease;}
+  .nav-item:hover .caret, .nav-item.open .caret{transform:rotate(180deg);}
+  .nav-link-plain{
+    font-family:'Oswald', sans-serif;
+    font-size:14px;
+    font-weight:500;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--ink);
+    padding:8px 12px;
+    position:relative;
+  }
+  .dropdown{
+    position:absolute; top:calc(100% - 4px); left:0;
+    min-width:190px;
+    background-color:#15110D !important;
+    border-radius:3px;
+    box-shadow:0 14px 30px rgba(21,17,13,0.28);
+    padding:8px 0;
+    opacity:0; visibility:hidden;
+    transform:translateY(-6px);
+    transition:opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+    z-index:60;
+  }
+  .nav-item:hover .dropdown, .nav-item.open .dropdown{
+    opacity:1; visibility:visible; transform:translateY(0);
+  }
+  .dropdown a{
+    display:block;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:0.05em; text-transform:uppercase;
+    color:#F2EEE3 !important;
+    padding:10px 18px;
+  }
+  .dropdown a:hover{background:rgba(255,255,255,0.06); color:var(--gold) !important;}
+  .nav-right{display:flex; align-items:center; gap:20px;}
+  .search-btn{
+    width:36px; height:36px;
+    border:1px solid var(--card-border);
+    border-radius:2px;
+    display:flex; align-items:center; justify-content:center;
+    background:transparent;
+    cursor:pointer;
+  }
+  .menu-toggle{display:none; background:none; border:none; cursor:pointer;}
+  @media (max-width:860px){
+    nav.links{display:none;}
+    .menu-toggle{display:block;}
+  }
+
+  /* ---------- Auth: signed out ---------- */
+  .member-nav-link{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700; font-size:11px;
+    text-transform:uppercase; letter-spacing:0.06em;
+    color:var(--gold);
+    padding:6px 10px;
+    border:1px solid rgba(185,146,74,0.4);
+    border-radius:20px;
+    white-space:nowrap;
+  }
+  .member-nav-link:hover{ background-color:rgba(185,146,74,0.1) !important; }
+  @media (max-width:600px){ .member-nav-link{ display:none; } }
+
+  .signin-btn{
+    font-family:'Oswald', sans-serif;
+    font-weight:600; font-size:13px;
+    text-transform:uppercase; letter-spacing:0.04em;
+    color:var(--oxblood);
+    background:transparent;
+    border:1.5px solid var(--oxblood);
+    border-radius:20px;
+    padding:8px 18px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .signin-btn:hover{ background-color:rgba(122,35,49,0.08) !important; }
+
+  /* ---------- Auth: signed in ---------- */
+  .account{ position:relative; display:none; }
+  .account.active{ display:block; }
+  .account-trigger{
+    display:flex; align-items:center; gap:8px;
+    background:none; border:none; cursor:pointer;
+    padding:4px 6px 4px 4px;
+    border-radius:20px;
+  }
+  .account-trigger:hover{ background-color:rgba(21,17,13,0.05) !important; }
+  .account-avatar{
+    width:30px; height:30px; border-radius:50%;
+    background:linear-gradient(135deg, var(--oxblood), var(--gold));
+    flex-shrink:0;
+  }
+  .account-record{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; font-weight:700;
+    color:var(--oxblood);
+  }
+  .account-caret{ width:9px; height:9px; opacity:0.6; }
+  .account-menu{
+    position:absolute; top:calc(100% + 8px); right:0;
+    min-width:210px;
+    background-color:#15110D !important;
+    border-radius:3px;
+    box-shadow:0 14px 30px rgba(21,17,13,0.28);
+    padding:10px 0;
+    opacity:0; visibility:hidden;
+    transform:translateY(-6px);
+    transition:opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+    z-index:60;
+  }
+  .account.open .account-menu{ opacity:1; visibility:visible; transform:translateY(0); }
+  .account-menu-head{
+    padding:10px 16px 12px;
+    border-bottom:1px solid rgba(242,238,227,0.12);
+    margin-bottom:6px;
+  }
+  .account-menu-name{ font-family:'Oswald', sans-serif; font-weight:600; font-size:14px; color:#F2EEE3; }
+  .account-menu-sub{ font-family:'JetBrains Mono', monospace; font-size:11px; color:rgba(242,238,227,0.55); margin-top:2px; }
+  .account-menu a, .account-menu button{
+    display:block; width:100%; text-align:left;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:0.04em; text-transform:uppercase;
+    color:#F2EEE3 !important;
+    background:none; border:none; cursor:pointer;
+    padding:10px 16px;
+  }
+  .account-menu a:hover, .account-menu button:hover{
+    background:rgba(255,255,255,0.06); color:var(--gold) !important;
+  }
+
+  /* ---------- Mobile drawer ---------- */
+  .drawer-backdrop{
+    position:fixed; inset:0;
+    background:rgba(21,17,13,0.55);
+    z-index:80;
+    opacity:0; visibility:hidden;
+    transition:opacity 0.2s ease, visibility 0.2s;
+  }
+  .drawer-backdrop.open{opacity:1; visibility:visible;}
+  .drawer{
+    position:fixed; top:0; right:0; bottom:0;
+    width:min(320px, 84vw);
+    background-color:#F0EADD !important;
+    z-index:90;
+    transform:translateX(100%);
+    transition:transform 0.25s ease;
+    overflow-y:auto;
+    padding:20px 0 40px;
+  }
+  .drawer.open{transform:translateX(0);}
+  .drawer-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:0 20px 18px;
+    border-bottom:1px solid var(--card-border);
+    margin-bottom:8px;
+  }
+  .drawer-close{background:none; border:none; cursor:pointer; padding:6px;}
+  .drawer-group{border-bottom:1px solid var(--card-border);}
+  .drawer-toggle{
+    width:100%;
+    display:flex; align-items:center; justify-content:space-between;
+    background:none; border:none; cursor:pointer;
+    padding:16px 20px;
+    font-family:'Oswald', sans-serif; font-size:15px; font-weight:600;
+    text-transform:uppercase; letter-spacing:0.04em;
+    color:var(--ink);
+  }
+  .drawer-toggle .caret{width:10px; height:10px; transition:transform 0.2s ease;}
+  .drawer-group.open .drawer-toggle .caret{transform:rotate(180deg);}
+  .drawer-sub{
+    max-height:0; overflow:hidden;
+    transition:max-height 0.25s ease;
+  }
+  .drawer-group.open .drawer-sub{max-height:240px;}
+  .drawer-sub a{
+    display:block;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:0.04em; text-transform:uppercase;
+    color:var(--steel);
+    padding:10px 20px 10px 34px;
+  }
+  .drawer-plain{
+    display:block;
+    padding:16px 20px;
+    font-family:'Oswald', sans-serif; font-size:15px; font-weight:600;
+    text-transform:uppercase; letter-spacing:0.04em;
+    color:var(--ink);
+    border-bottom:1px solid var(--card-border);
+  }
+
+
+  /* ---------- Article header ---------- */
+  .article-header{
+    padding:44px 0 40px;
+    background-color:#15110D !important;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(185,146,74,0.35) 0%, transparent 50%),
+      radial-gradient(circle at 85% 80%, rgba(122,35,49,0.25) 0%, transparent 50%);
+  }
+  .breadcrumb{ font-family:'JetBrains Mono', monospace; font-size:11px; color:rgba(242,238,227,0.5) !important; margin-bottom:16px; }
+  .breadcrumb a{ color:rgba(242,238,227,0.75) !important; }
+  .breadcrumb a:hover{ color:var(--gold) !important; }
+  .breadcrumb .sep{ color:rgba(242,238,227,0.3); margin:0 6px; }
+  .tag-pill{
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+    color:#F2EEE3; background:var(--gold); padding:5px 10px; border-radius:2px; font-weight:700;
+  }
+  .article-header h1{
+    font-family:'Anton', sans-serif; font-size:clamp(30px, 5vw, 50px);
+    line-height:1.05; color:#F2EEE3 !important; margin:16px 0;
+  }
+  .article-header .dek{ font-size:17px; color:rgba(242,238,227,0.72) !important; max-width:60ch; }
+  .disclosure{
+    font-family:'JetBrains Mono', monospace; font-size:11px;
+    color:rgba(242,238,227,0.5) !important;
+    margin-top:20px; padding-top:14px;
+    border-top:1px solid rgba(242,238,227,0.15);
+  }
+
+  /* ---------- Article body ---------- */
+  .article-body{ padding:44px 0 8px; }
+  .article-body p{ font-size:16px; line-height:1.75; color:var(--ink); margin-bottom:20px; }
+  .article-body h2{
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:22px;
+    margin:38px 0 16px; color:var(--ink);
+  }
+
+  /* ---------- Tier cards ---------- */
+  .tier-card{
+    border:1px solid var(--card-border);
+    background-color:#F0EADD !important;
+    border-radius:4px;
+    overflow:hidden;
+    margin:24px 0;
+  }
+  .tier-card.featured{ border-color:var(--gold); border-width:1.5px; }
+  .tier-head{
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    padding:16px 20px;
+    background-color:var(--ink) !important;
+  }
+  .tier-badge{
+    font-family:'JetBrains Mono', monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase;
+    font-weight:700; color:var(--gold) !important;
+    background-color:rgba(185,146,74,0.15) !important;
+    padding:4px 10px; border-radius:20px;
+  }
+  .tier-price{ font-family:'Anton', sans-serif; font-size:20px; color:#F2EEE3 !important; }
+  .tier-body{ padding:20px; }
+  .tier-name{ font-family:'Oswald', sans-serif; font-weight:600; font-size:19px; color:var(--ink); margin-bottom:8px; }
+  .tier-desc{ font-size:14px; color:var(--steel); line-height:1.6; margin-bottom:16px; }
+  .spec-row{ display:flex; flex-wrap:wrap; gap:8px 20px; margin-bottom:18px; }
+  .spec{ font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--steel); }
+  .spec strong{ color:var(--ink); }
+  .buy-btn{
+    display:inline-block;
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:14px;
+    text-transform:uppercase; letter-spacing:0.04em;
+    padding:12px 22px;
+    background-color:var(--oxblood) !important;
+    color:#F2EEE3 !important;
+    border-radius:3px;
+  }
+  .buy-btn:hover{ background-color:var(--oxblood-bright) !important; }
+
+  /* ---------- Verdict box ---------- */
+  .verdict-box{
+    border-left:4px solid var(--gold);
+    background-color:#F0EADD !important;
+    padding:20px 22px;
+    margin:32px 0;
+    border-radius:0 3px 3px 0;
+  }
+  .verdict-label{
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--gold-dark, var(--oxblood)); font-weight:700; margin-bottom:8px; display:block;
+  }
+
+  .signoff{ display:flex; align-items:center; gap:14px; padding:28px 0; margin-top:12px; border-top:1px solid var(--card-border); }
+  .avatar{ width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg, var(--oxblood), var(--gold)); flex-shrink:0; }
+  .signoff-text{ font-size:13px; color:var(--steel); }
+  .signoff-name{ font-family:'Oswald', sans-serif; font-weight:600; font-size:15px; color:var(--ink); }
+
+  footer{ padding:36px 0 46px; }
+  .footer-inner{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+  .footer-logo{ font-family:'Anton', sans-serif; font-size:18px; }
+  .footer-links{ display:flex; gap:22px; }
+  .footer-links a{
+    font-family:'JetBrains Mono', monospace; font-size:11px; text-transform:uppercase;
+    letter-spacing:0.06em; color:var(--steel);
+  }
+  .footer-note{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--steel-light); margin-top:16px; }
+
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav-inner">
+    <a href="index.html" class="logo">BOUT<span class="accent">REPORT</span></a>
+    <nav class="links">
+      <div class="nav-item">
+        <button class="nav-link">News <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+        <div class="dropdown">
+          <a href="#">All News</a>
+          <a href="#">Matchups</a>
+          <a href="#">Analysis</a>
+          <a href="#">Results</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <button class="nav-link">Rankings <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+        <div class="dropdown">
+          <a href="#">P4P Top 10</a>
+          <a href="leaderboard.html">Fan Leaderboard</a>
+          <a href="#">Heavyweight</a>
+          <a href="#">Light Heavyweight</a>
+          <a href="#">Welterweight</a>
+          <a href="#">Lightweight</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <button class="nav-link">The Vault <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+        <div class="dropdown">
+          <a href="#">90s</a>
+          <a href="#">2000s</a>
+          <a href="#">2010s</a>
+          <a href="#">2020s</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <button class="nav-link">Fighters <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+        <div class="dropdown">
+          <a href="#">Heavyweight</a>
+          <a href="#">Light Heavyweight</a>
+          <a href="#">Welterweight</a>
+          <a href="#">Lightweight</a>
+        </div>
+      </div>
+      <a href="#" class="nav-link-plain">Prospects</a>
+      <a href="crossover.html" class="nav-link-plain">Crossover</a>
+      <div class="nav-item">
+        <button class="nav-link">Gear <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+        <div class="dropdown">
+          <a href="gear.html">All Gear</a>
+          <a href="#">Gloves</a>
+          <a href="#">Boxing Shoes</a>
+          <a href="#">Hand Wraps &amp; Headgear</a>
+          <a href="best-running-watches.html">GPS Watches</a>
+          <a href="#">Running Shoes</a>
+          <a href="#">Jump Ropes</a>
+        </div>
+      </div>
+    </nav>
+    <div class="nav-right">
+      <button class="search-btn" aria-label="Search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+
+      <a href="membership.html" class="member-nav-link">★ Membership</a>
+      <button class="signin-btn" id="signInBtn" onclick="previewSignIn()">Sign In</button>
+
+      <div class="account" id="accountMenu">
+        <button class="account-trigger" onclick="toggleAccountMenu()">
+          <div class="account-avatar"></div>
+          <span class="account-record">12-9</span>
+          <svg class="account-caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg>
+        </button>
+        <div class="account-menu">
+          <div class="account-menu-head">
+            <div class="account-menu-name">ChrisFromCarolina</div>
+            <div class="account-menu-sub">Prospect · 12-9 (57%)</div>
+          </div>
+          <a href="#">My Profile</a>
+          <a href="leaderboard.html">Leaderboard</a>
+          <a href="#">My Predictions</a>
+          <button onclick="previewSignOut()">Sign Out</button>
+        </div>
+      </div>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="rope-line"></div>
+</header>
+
+<div class="drawer-backdrop" id="drawerBackdrop"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <a href="index.html" class="logo" style="font-size:20px;">BOUT<span class="accent">REPORT</span></a>
+    <button class="drawer-close" id="drawerClose" aria-label="Close menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="drawer-group">
+    <button class="drawer-toggle">News <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+    <div class="drawer-sub">
+      <a href="#">All News</a><a href="#">Matchups</a><a href="#">Analysis</a><a href="#">Results</a>
+    </div>
+  </div>
+  <div class="drawer-group">
+    <button class="drawer-toggle">Rankings <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+    <div class="drawer-sub">
+      <a href="#">P4P Top 10</a>
+          <a href="leaderboard.html">Fan Leaderboard</a><a href="#">Heavyweight</a><a href="#">Light Heavyweight</a><a href="#">Welterweight</a><a href="#">Lightweight</a>
+    </div>
+  </div>
+  <div class="drawer-group">
+    <button class="drawer-toggle">The Vault <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+    <div class="drawer-sub">
+      <a href="#">90s</a><a href="#">2000s</a><a href="#">2010s</a><a href="#">2020s</a>
+    </div>
+  </div>
+  <div class="drawer-group">
+    <button class="drawer-toggle">Fighters <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+    <div class="drawer-sub">
+      <a href="#">Heavyweight</a><a href="#">Light Heavyweight</a><a href="#">Welterweight</a><a href="#">Lightweight</a>
+    </div>
+  </div>
+  <a href="#" class="drawer-plain">Prospects</a>
+  <a href="crossover.html" class="drawer-plain">Crossover</a>
+  <div class="drawer-group">
+    <button class="drawer-toggle">Gear <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+    <div class="drawer-sub">
+      <a href="gear.html">All Gear</a><a href="#">Gloves</a><a href="#">Boxing Shoes</a><a href="best-running-watches.html">GPS Watches</a><a href="#">Running Shoes</a><a href="#">Jump Ropes</a>
+    </div>
+  </div>
+</div>
+
+<section class="article-header">
+  <div class="narrow">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a><span class="sep">/</span><a href="gear.html">Gear</a><span class="sep">/</span>GPS Watches
+    </div>
+    <span class="tag-pill">Gear Guide</span>
+    <h1>Best GPS Running Watches for Boxers</h1>
+    <p class="dek">Boxing conditioning lives and dies on your roadwork. Here's what's actually worth strapping on, broken down by what you're training for and what you're willing to spend.</p>
+    <div class="disclosure">As an Amazon Associate and affiliate partner, BoutReport earns from qualifying purchases. This never affects which products we recommend.</div>
+  </div>
+</section>
+
+<div class="wrap"><div class="rope-line"></div></div>
+
+<section class="article-body">
+  <div class="narrow">
+    <p>Every fighter's camp has a roadwork problem: you need to track pace and distance without babysitting your phone for three miles in the dark before the gym opens. A GPS watch solves that, but the "best" one depends entirely on what you're actually training for and how much you want to spend finding out.</p>
+    <p>I'm currently testing a couple of these myself as I build back into running after a long break, so this isn't a spec-sheet summary — it's what actually holds up on real roadwork.</p>
+
+    <h2>Budget Pick</h2>
+    <div class="tier-card">
+      <div class="tier-head">
+        <span class="tier-badge">Budget</span>
+        <span class="tier-price">~$100-130</span>
+      </div>
+      <div class="tier-body">
+        <div class="tier-name">Garmin Forerunner 55</div>
+        <p class="tier-desc">No-frills GPS tracking, solid battery life, and Garmin's pace coaching without paying for features you won't touch as a beginner. The right call if you just need reliable mile splits for roadwork.</p>
+        <div class="spec-row">
+          <span class="spec"><strong>Battery:</strong> ~2 weeks</span>
+          <span class="spec"><strong>GPS:</strong> Yes</span>
+          <span class="spec"><strong>HR Monitor:</strong> Wrist-based</span>
+        </div>
+        <a href="#" class="buy-btn">Check Price →</a>
+      </div>
+    </div>
+
+    <h2>The Sweet Spot</h2>
+    <div class="tier-card featured">
+      <div class="tier-head">
+        <span class="tier-badge">Editor's Pick</span>
+        <span class="tier-price">~$250-300</span>
+      </div>
+      <div class="tier-body">
+        <div class="tier-name">Coros Pace 4</div>
+        <p class="tier-desc">This is the one I'm actually running with right now. Lighter than most Garmins in this price range, genuinely excellent battery life, and pace accuracy that's held up on every road session so far — worth the jump over the budget tier if roadwork is a real part of your training, not an afterthought.</p>
+        <div class="spec-row">
+          <span class="spec"><strong>Battery:</strong> ~24 days</span>
+          <span class="spec"><strong>GPS:</strong> Dual-frequency</span>
+          <span class="spec"><strong>HR Monitor:</strong> Wrist + chest strap support</span>
+        </div>
+        <a href="#" class="buy-btn">Check Price →</a>
+      </div>
+    </div>
+
+    <h2>Premium Pick</h2>
+    <div class="tier-card">
+      <div class="tier-head">
+        <span class="tier-badge">Premium</span>
+        <span class="tier-price">~$500-600</span>
+      </div>
+      <div class="tier-body">
+        <div class="tier-name">Garmin Forerunner 965</div>
+        <p class="tier-desc">Full training load metrics, recovery tracking, and a bright AMOLED display — built for someone tracking camp progression in real detail, not just logging miles. Overkill if you're just getting into roadwork, but the right tool once you're training seriously.</p>
+        <div class="spec-row">
+          <span class="spec"><strong>Battery:</strong> ~15 days</span>
+          <span class="spec"><strong>GPS:</strong> Multi-band</span>
+          <span class="spec"><strong>HR Monitor:</strong> Wrist + chest strap support</span>
+        </div>
+        <a href="#" class="buy-btn">Check Price →</a>
+      </div>
+    </div>
+
+    <div class="verdict-box">
+      <span class="verdict-label">The Verdict</span>
+      <p style="font-family:'Oswald', sans-serif; font-size:17px; font-weight:500; color:var(--ink); line-height:1.5;">If you're serious about roadwork but don't need every metric under the sun, the Coros Pace 4 is where the value actually is. I'll update this once I've got more miles on mine.</p>
+    </div>
+
+    <p>Pair whichever watch you land on with a chest strap if you want genuinely accurate heart rate data during interval work — wrist-based sensors tend to lag during anything explosive, which describes most boxing conditioning work.</p>
+
+    <div class="signoff">
+      <div class="avatar"></div>
+      <div>
+        <div class="signoff-name">Chris</div>
+        <div class="signoff-text">Founder, BoutReport. Currently rebuilding his own roadwork base.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-logo">BOUTREPORT</div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="gear.html">Gear</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+    <div class="footer-note">© 2026 BoutReport. Boxing, told right.</div>
+  </div>
+</footer>
+
+<script>
+  // NOTE: This is a UI preview only. Real sign-in requires Supabase Auth
+  // (Google/X OAuth) wired up when the site is actually built.
+  function previewSignIn(){
+    document.getElementById('signInBtn').style.display = 'none';
+    document.getElementById('accountMenu').classList.add('active');
+  }
+  function previewSignOut(){
+    document.getElementById('accountMenu').classList.remove('active', 'open');
+    document.getElementById('signInBtn').style.display = 'inline-block';
+  }
+  function toggleAccountMenu(){
+    document.getElementById('accountMenu').classList.toggle('open');
+  }
+  document.addEventListener('click', (e) => {
+    if(!e.target.closest('.account')){
+      document.getElementById('accountMenu').classList.remove('open');
+    }
+  });
+
+  const menuToggle = document.getElementById('menuToggle');
+  const drawer = document.getElementById('drawer');
+  const drawerBackdrop = document.getElementById('drawerBackdrop');
+  const drawerClose = document.getElementById('drawerClose');
+
+  function openDrawer(){
+    drawer.classList.add('open');
+    drawerBackdrop.classList.add('open');
+  }
+  function closeDrawer(){
+    drawer.classList.remove('open');
+    drawerBackdrop.classList.remove('open');
+  }
+  menuToggle.addEventListener('click', openDrawer);
+  drawerClose.addEventListener('click', closeDrawer);
+  drawerBackdrop.addEventListener('click', closeDrawer);
+
+  document.querySelectorAll('.drawer-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const group = btn.closest('.drawer-group');
+      const wasOpen = group.classList.contains('open');
+      document.querySelectorAll('.drawer-group').forEach(g => g.classList.remove('open'));
+      if(!wasOpen){ group.classList.add('open'); }
+    });
+  });
+
+  // Desktop dropdown: also allow tap/click to toggle (for touch laptops/tablets)
+  document.querySelectorAll('.nav-item .nav-link').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const item = btn.closest('.nav-item');
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('open'));
+      if(!wasOpen){ item.classList.add('open'); }
+    });
+  });
+  document.addEventListener('click', (e) => {
+    if(!e.target.closest('.nav-item')){
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('open'));
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Membership — BoutReport</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<meta name="color-scheme" content="light">
+<style>
+  html{color-scheme: light only;}
+  :root{
+    --ink:#15110D;
+    --ink-soft:#221C15;
+    --canvas:#E7DFCE;
+    --canvas-light:#F0EADD;
+    --oxblood:#7A2331;
+    --oxblood-bright:#9C2E3F;
+    --gold:#B9924A;
+    --steel:#4A463F;
+    --steel-light:#7A7568;
+    --win:#3E6B4F;
+    --rope-red:#8C2A2A;
+    --rope-blue:#26425C;
+    --card-border: rgba(21,17,13,0.12);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html, body{background-color:#E7DFCE !important;}
+  body{
+    color:#15110D !important;
+    font-family:'Inter', sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 24px;}
+  .narrow{max-width:760px; margin:0 auto; padding:0 24px;}
+  .rope-line{
+    height:3px; width:100%;
+    background: linear-gradient(to right, var(--rope-red) 0 50%, var(--rope-blue) 50% 100%);
+    background-size: 24px 3px;
+    opacity:0.85;
+  }
+  header{
+    position:sticky; top:0; z-index:50;
+    background:var(--canvas);
+    border-bottom:1px solid var(--card-border);
+  }
+  .nav-inner{ display:flex; align-items:center; justify-content:space-between; padding:18px 24px; }
+  .logo{ font-family:'Anton', sans-serif; font-size:26px; display:flex; align-items:baseline; gap:2px; }
+  .logo .accent{ color:var(--oxblood); }
+  nav.links{display:flex; gap:8px;}
+  .nav-item{position:relative;}
+  .nav-link{
+    font-family:'Oswald', sans-serif;
+    font-size:14px;
+    font-weight:500;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--ink);
+    background:none; border:none; cursor:pointer;
+    display:flex; align-items:center; gap:5px;
+    padding:8px 12px;
+    position:relative;
+  }
+  .nav-link::after{
+    content:"";
+    position:absolute; left:12px; bottom:2px;
+    width:0; height:2px;
+    background:var(--oxblood);
+    transition:width 0.2s ease;
+  }
+  .nav-link:hover::after{width:calc(100% - 24px);}
+  .nav-link .caret{width:9px; height:9px; opacity:0.6; transition:transform 0.15s ease;}
+  .nav-item:hover .caret, .nav-item.open .caret{transform:rotate(180deg);}
+  .nav-link-plain{
+    font-family:'Oswald', sans-serif;
+    font-size:14px;
+    font-weight:500;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--ink);
+    padding:8px 12px;
+    position:relative;
+  }
+  .dropdown{
+    position:absolute; top:calc(100% - 4px); left:0;
+    min-width:190px;
+    background-color:#15110D !important;
+    border-radius:3px;
+    box-shadow:0 14px 30px rgba(21,17,13,0.28);
+    padding:8px 0;
+    opacity:0; visibility:hidden;
+    transform:translateY(-6px);
+    transition:opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+    z-index:60;
+  }
+  .nav-item:hover .dropdown, .nav-item.open .dropdown{
+    opacity:1; visibility:visible; transform:translateY(0);
+  }
+  .dropdown a{
+    display:block;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:0.05em; text-transform:uppercase;
+    color:#F2EEE3 !important;
+    padding:10px 18px;
+  }
+  .dropdown a:hover{background:rgba(255,255,255,0.06); color:var(--gold) !important;}
+  .nav-right{display:flex; align-items:center; gap:20px;}
+  .search-btn{
+    width:36px; height:36px;
+    border:1px solid var(--card-border);
+    border-radius:2px;
+    display:flex; align-items:center; justify-content:center;
+    background:transparent;
+    cursor:pointer;
+  }
+  .menu-toggle{display:none; background:none; border:none; cursor:pointer;}
+  @media (max-width:860px){
+    nav.links{display:none;}
+    .menu-toggle{display:block;}
+  }
+
+  /* ---------- Auth: signed out ---------- */
+  .member-nav-link{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700; font-size:11px;
+    text-transform:uppercase; letter-spacing:0.06em;
+    color:var(--gold);
+    padding:6px 10px;
+    border:1px solid rgba(185,146,74,0.4);
+    border-radius:20px;
+    white-space:nowrap;
+  }
+  .member-nav-link:hover{ background-color:rgba(185,146,74,0.1) !important; }
+  @media (max-width:600px){ .member-nav-link{ display:none; } }
+
+  .signin-btn{
+    font-family:'Oswald', sans-serif;
+    font-weight:600; font-size:13px;
+    text-transform:uppercase; letter-spacing:0.04em;
+    color:var(--oxblood);
+    background:transparent;
+    border:1.5px solid var(--oxblood);
+    border-radius:20px;
+    padding:8px 18px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .signin-btn:hover{ background-color:rgba(122,35,49,0.08) !important; }
+
+  /* ---------- Auth: signed in ---------- */
+  .account{ position:relative; display:none; }
+  .account.active{ display:block; }
+  .account-trigger{
+    display:flex; align-items:center; gap:8px;
+    background:none; border:none; cursor:pointer;
+    padding:4px 6px 4px 4px;
+    border-radius:20px;
+  }
+  .account-trigger:hover{ background-color:rgba(21,17,13,0.05) !important; }
+  .account-avatar{
+    width:30px; height:30px; border-radius:50%;
+    background:linear-gradient(135deg, var(--oxblood), var(--gold));
+    flex-shrink:0;
+  }
+  .account-record{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; font-weight:700;
+    color:var(--oxblood);
+  }
+  .account-caret{ width:9px; height:9px; opacity:0.6; }
+  .account-menu{
+    position:absolute; top:calc(100% + 8px); right:0;
+    min-width:210px;
+    background-color:#15110D !important;
+    border-radius:3px;
+    box-shadow:0 14px 30px rgba(21,17,13,0.28);
+    padding:10px 0;
+    opacity:0; visibility:hidden;
+    transform:translateY(-6px);
+    transition:opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+    z-index:60;
+  }
+  .account.open .account-menu{ opacity:1; visibility:visible; transform:translateY(0); }
+  .account-menu-head{
+    padding:10px 16px 12px;
+    border-bottom:1px solid rgba(242,238,227,0.12);
+    margin-bottom:6px;
+  }
+  .account-menu-name{ font-family:'Oswald', sans-serif; font-weight:600; font-size:14px; color:#F2EEE3; }
+  .account-menu-sub{ font-family:'JetBrains Mono', monospace; font-size:11px; color:rgba(242,238,227,0.55); margin-top:2px; }
+  .account-menu a, .account-menu button{
+    display:block; width:100%; text-align:left;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:0.04em; text-transform:uppercase;
+    color:#F2EEE3 !important;
+    background:none; border:none; cursor:pointer;
+    padding:10px 16px;
+  }
+  .account-menu a:hover, .account-menu button:hover{
+    background:rgba(255,255,255,0.06); color:var(--gold) !important;
+  }
+
+  /* ---------- Mobile drawer ---------- */
+  .drawer-backdrop{
+    position:fixed; inset:0;
+    background:rgba(21,17,13,0.55);
+    z-index:80;
+    opacity:0; visibility:hidden;
+    transition:opacity 0.2s ease, visibility 0.2s;
+  }
+  .drawer-backdrop.open{opacity:1; visibility:visible;}
+  .drawer{
+    position:fixed; top:0; right:0; bottom:0;
+    width:min(320px, 84vw);
+    background-color:#F0EADD !important;
+    z-index:90;
+    transform:translateX(100%);
+    transition:transform 0.25s ease;
+    overflow-y:auto;
+    padding:20px 0 40px;
+  }
+  .drawer.open{transform:translateX(0);}
+  .drawer-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:0 20px 18px;
+    border-bottom:1px solid var(--card-border);
+    margin-bottom:8px;
+  }
+  .drawer-close{background:none; border:none; cursor:pointer; padding:6px;}
+  .drawer-group{border-bottom:1px solid var(--card-border);}
+  .drawer-toggle{
+    width:100%;
+    display:flex; align-items:center; justify-content:space-between;
+    background:none; border:none; cursor:pointer;
+    padding:16px 20px;
+    font-family:'Oswald', sans-serif; font-size:15px; font-weight:600;
+    text-transform:uppercase; letter-spacing:0.04em;
+    color:var(--ink);
+  }
+  .drawer-toggle .caret{width:10px; height:10px; transition:transform 0.2s ease;}
+  .drawer-group.open .drawer-toggle .caret{transform:rotate(180deg);}
+  .drawer-sub{
+    max-height:0; overflow:hidden;
+    transition:max-height 0.25s ease;
+  }
+  .drawer-group.open .drawer-sub{max-height:240px;}
+  .drawer-sub a{
+    display:block;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:0.04em; text-transform:uppercase;
+    color:var(--steel);
+    padding:10px 20px 10px 34px;
+  }
+  .drawer-plain{
+    display:block;
+    padding:16px 20px;
+    font-family:'Oswald', sans-serif; font-size:15px; font-weight:600;
+    text-transform:uppercase; letter-spacing:0.04em;
+    color:var(--ink);
+    border-bottom:1px solid var(--card-border);
+  }
+
+
+  /* ---------- Page hero ---------- */
+  .mem-hero{
+    padding:52px 0 44px;
+    background-color:#15110D !important;
+    background-image:
+      radial-gradient(circle at 12% 20%, rgba(185,146,74,0.35) 0%, transparent 55%),
+      radial-gradient(circle at 88% 80%, rgba(122,35,49,0.3) 0%, transparent 55%);
+    text-align:center;
+  }
+  .mem-hero .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--gold) !important; font-weight:700; margin-bottom:12px; display:block;
+  }
+  .mem-hero h1{
+    font-family:'Anton', sans-serif;
+    font-size:clamp(30px, 5vw, 48px);
+    color:#F2EEE3 !important;
+    margin-bottom:14px;
+  }
+  .mem-hero p{
+    font-size:16px;
+    color:rgba(242,238,227,0.72) !important;
+    max-width:52ch;
+    margin:0 auto;
+  }
+
+  /* ---------- Perks ---------- */
+  .section{ padding:48px 0; }
+  .section-title{
+    font-family:'Anton', sans-serif; font-size:24px; color:#15110D !important;
+    margin-bottom:24px; text-align:center;
+  }
+  .perks-grid{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:20px;
+    max-width:900px; margin:0 auto;
+  }
+  @media (max-width:760px){ .perks-grid{ grid-template-columns:1fr; } }
+  .perk-card{
+    border:1px solid var(--card-border);
+    background-color:#F0EADD !important;
+    border-radius:3px;
+    padding:26px 22px;
+    text-align:center;
+  }
+  .perk-icon{
+    width:44px; height:44px; border-radius:50%;
+    background-color:rgba(185,146,74,0.15) !important;
+    display:flex; align-items:center; justify-content:center;
+    margin:0 auto 16px;
+    color:var(--gold);
+  }
+  .perk-card h3{
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:16px;
+    margin-bottom:8px; color:var(--ink);
+  }
+  .perk-card p{ font-size:13px; color:var(--steel); line-height:1.5; }
+
+  /* ---------- Pricing card ---------- */
+  .price-card{
+    max-width:400px; margin:0 auto;
+    border:1.5px solid var(--gold);
+    background-color:#F0EADD !important;
+    border-radius:4px;
+    overflow:hidden;
+    box-shadow:0 16px 40px rgba(0,0,0,0.12);
+  }
+  .price-head{
+    background-color:#15110D !important;
+    padding:22px 24px;
+    text-align:center;
+  }
+  .price-head .badge-tag{
+    display:inline-block;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--gold) !important;
+    background-color:rgba(185,146,74,0.15) !important;
+    padding:4px 10px; border-radius:20px;
+    margin-bottom:10px;
+  }
+  .price-amount{
+    font-family:'Anton', sans-serif;
+    font-size:44px;
+    color:#F2EEE3 !important;
+  }
+  .price-amount span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:14px;
+    color:rgba(242,238,227,0.6);
+  }
+  .price-body{ padding:24px; }
+  .price-list{ list-style:none; margin-bottom:22px; }
+  .price-list li{
+    display:flex; align-items:center; gap:10px;
+    font-size:14px; color:var(--ink);
+    padding:9px 0;
+    border-bottom:1px solid var(--card-border);
+  }
+  .price-list li:last-child{ border-bottom:none; }
+  .price-check{ color:var(--win); flex-shrink:0; }
+  .join-btn{
+    width:100%;
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:15px;
+    text-transform:uppercase; letter-spacing:0.04em;
+    padding:14px;
+    background-color:var(--oxblood) !important;
+    color:#F2EEE3 !important;
+    border:1px solid var(--oxblood);
+    border-radius:3px;
+    cursor:pointer;
+  }
+  .join-btn:hover{ background-color:var(--oxblood-bright) !important; }
+  .price-note{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; color:var(--steel-light);
+    text-align:center; margin-top:12px;
+  }
+
+  /* ---------- Badge preview ---------- */
+  .badge-preview{
+    display:flex; align-items:center; gap:14px;
+    max-width:500px; margin:0 auto;
+    background-color:#F0EADD !important;
+    border:1px solid var(--card-border);
+    border-radius:3px;
+    padding:16px 20px;
+  }
+  .badge-preview-avatar{
+    width:38px; height:38px; border-radius:50%;
+    background:linear-gradient(135deg, var(--oxblood), var(--gold));
+    flex-shrink:0;
+  }
+  .member-badge{
+    display:inline-flex; align-items:center; gap:4px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; letter-spacing:0.05em; text-transform:uppercase;
+    font-weight:700;
+    color:var(--gold);
+    background-color:rgba(185,146,74,0.15) !important;
+    padding:3px 8px; border-radius:3px;
+    margin-left:6px;
+  }
+
+  /* ---------- Paywall preview ---------- */
+  .paywall-demo{
+    max-width:600px; margin:0 auto;
+    border:1px solid var(--card-border);
+    background-color:#F0EADD !important;
+    border-radius:3px;
+    overflow:hidden;
+  }
+  .paywall-content{
+    padding:24px 24px 0;
+    position:relative;
+  }
+  .paywall-content p{ font-size:14px; color:var(--ink); line-height:1.7; margin-bottom:14px; }
+  .paywall-fade{
+    height:90px;
+    background:linear-gradient(to bottom, rgba(240,234,221,0) 0%, #F0EADD 90%);
+    margin-top:-90px;
+    position:relative;
+    z-index:2;
+  }
+  .paywall-lock{
+    text-align:center;
+    padding:0 24px 28px;
+    position:relative; z-index:3;
+  }
+  .paywall-lock svg{ color:var(--gold); margin-bottom:10px; }
+  .paywall-lock h4{
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:16px;
+    margin-bottom:6px; color:var(--ink);
+  }
+  .paywall-lock p{ font-size:13px; color:var(--steel); margin-bottom:16px; }
+  .paywall-lock .join-btn{ max-width:220px; margin:0 auto; }
+
+  footer{ padding:36px 0 46px; }
+  .footer-inner{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+  .footer-logo{ font-family:'Anton', sans-serif; font-size:18px; }
+  .footer-links{ display:flex; gap:22px; }
+  .footer-links a{
+    font-family:'JetBrains Mono', monospace; font-size:11px; text-transform:uppercase;
+    letter-spacing:0.06em; color:var(--steel);
+  }
+  .footer-note{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--steel-light); margin-top:16px; }
+
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav-inner">
+    <a href="index.html" class="logo">BOUT<span class="accent">REPORT</span></a>
+    <nav class="links">
+      <div class="nav-item">
+        <button class="nav-link">News <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+        <div class="dropdown">
+          <a href="#">All News</a>
+          <a href="#">Matchups</a>
+          <a href="#">Analysis</a>
+          <a href="#">Results</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <button class="nav-link">Rankings <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+        <div class="dropdown">
+          <a href="#">P4P Top 10</a>
+          <a href="leaderboard.html">Fan Leaderboard</a>
+          <a href="#">Heavyweight</a>
+          <a href="#">Light Heavyweight</a>
+          <a href="#">Welterweight</a>
+          <a href="#">Lightweight</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <button class="nav-link">The Vault <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+        <div class="dropdown">
+          <a href="#">90s</a>
+          <a href="#">2000s</a>
+          <a href="#">2010s</a>
+          <a href="#">2020s</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <button class="nav-link">Fighters <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+        <div class="dropdown">
+          <a href="#">Heavyweight</a>
+          <a href="#">Light Heavyweight</a>
+          <a href="#">Welterweight</a>
+          <a href="#">Lightweight</a>
+        </div>
+      </div>
+      <a href="#" class="nav-link-plain">Prospects</a>
+      <a href="crossover.html" class="nav-link-plain">Crossover</a>
+      <div class="nav-item">
+        <button class="nav-link">Gear <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+        <div class="dropdown">
+          <a href="gear.html">All Gear</a>
+          <a href="#">Gloves</a>
+          <a href="#">Boxing Shoes</a>
+          <a href="#">Hand Wraps &amp; Headgear</a>
+          <a href="best-running-watches.html">GPS Watches</a>
+          <a href="#">Running Shoes</a>
+          <a href="#">Jump Ropes</a>
+        </div>
+      </div>
+    </nav>
+    <div class="nav-right">
+      <button class="search-btn" aria-label="Search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+
+      <a href="membership.html" class="member-nav-link">★ Membership</a>
+      <button class="signin-btn" id="signInBtn" onclick="previewSignIn()">Sign In</button>
+
+      <div class="account" id="accountMenu">
+        <button class="account-trigger" onclick="toggleAccountMenu()">
+          <div class="account-avatar"></div>
+          <span class="account-record">12-9</span>
+          <svg class="account-caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg>
+        </button>
+        <div class="account-menu">
+          <div class="account-menu-head">
+            <div class="account-menu-name">ChrisFromCarolina</div>
+            <div class="account-menu-sub">Prospect · 12-9 (57%)</div>
+          </div>
+          <a href="#">My Profile</a>
+          <a href="leaderboard.html">Leaderboard</a>
+          <a href="#">My Predictions</a>
+          <button onclick="previewSignOut()">Sign Out</button>
+        </div>
+      </div>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="rope-line"></div>
+</header>
+
+<div class="drawer-backdrop" id="drawerBackdrop"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <a href="index.html" class="logo" style="font-size:20px;">BOUT<span class="accent">REPORT</span></a>
+    <button class="drawer-close" id="drawerClose" aria-label="Close menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="drawer-group">
+    <button class="drawer-toggle">News <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+    <div class="drawer-sub">
+      <a href="#">All News</a><a href="#">Matchups</a><a href="#">Analysis</a><a href="#">Results</a>
+    </div>
+  </div>
+  <div class="drawer-group">
+    <button class="drawer-toggle">Rankings <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+    <div class="drawer-sub">
+      <a href="#">P4P Top 10</a>
+          <a href="leaderboard.html">Fan Leaderboard</a><a href="#">Heavyweight</a><a href="#">Light Heavyweight</a><a href="#">Welterweight</a><a href="#">Lightweight</a>
+    </div>
+  </div>
+  <div class="drawer-group">
+    <button class="drawer-toggle">The Vault <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+    <div class="drawer-sub">
+      <a href="#">90s</a><a href="#">2000s</a><a href="#">2010s</a><a href="#">2020s</a>
+    </div>
+  </div>
+  <div class="drawer-group">
+    <button class="drawer-toggle">Fighters <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+    <div class="drawer-sub">
+      <a href="#">Heavyweight</a><a href="#">Light Heavyweight</a><a href="#">Welterweight</a><a href="#">Lightweight</a>
+    </div>
+  </div>
+  <a href="#" class="drawer-plain">Prospects</a>
+  <a href="crossover.html" class="drawer-plain">Crossover</a>
+  <div class="drawer-group">
+    <button class="drawer-toggle">Gear <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+    <div class="drawer-sub">
+      <a href="gear.html">All Gear</a><a href="#">Gloves</a><a href="#">Boxing Shoes</a><a href="best-running-watches.html">GPS Watches</a><a href="#">Running Shoes</a><a href="#">Jump Ropes</a>
+    </div>
+  </div>
+</div>
+
+<section class="mem-hero">
+  <div class="wrap">
+    <span class="eyebrow">BoutReport Membership</span>
+    <h1>Support The Sport You Love</h1>
+    <p>No ads. A badge that shows you're not just passing through. And your money going straight toward covering boxing the way it deserves — not toward whoever bought the banner ad.</p>
+  </div>
+</section>
+
+<div class="wrap"><div class="rope-line"></div></div>
+
+<section class="section">
+  <div class="wrap">
+    <h2 class="section-title">What You Get</h2>
+    <div class="perks-grid">
+      <div class="perk-card">
+        <div class="perk-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 18a2 2 0 01-2 2H9a2 2 0 01-2-2"/><path d="M3 6l3 12h12l3-12"/><path d="M3 6h18"/><line x1="9" y1="10" x2="15" y2="10"/></svg>
+        </div>
+        <h3>Ad-Free Reading</h3>
+        <p>Every page, every article, no banners or pop-ups. Just the fight.</p>
+      </div>
+      <div class="perk-card">
+        <div class="perk-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.9 6.5L22 9.3l-5 4.9 1.2 7L12 17.8 5.8 21.2 7 14.2 2 9.3l7.1-.8z"/></svg>
+        </div>
+        <h3>Member Badge</h3>
+        <p>Shows next to your name in comments and on the leaderboard.</p>
+      </div>
+      <div class="perk-card">
+        <div class="perk-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="9"/></svg>
+        </div>
+        <h3>Early Vault Access</h3>
+        <p>New historical deep-dives 48 hours before they go public.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="rope-line"></div></div>
+
+<section class="section">
+  <div class="wrap">
+    <h2 class="section-title">Pricing</h2>
+    <div class="price-card">
+      <div class="price-head">
+        <span class="badge-tag">Founding Member Rate</span>
+        <div class="price-amount">$2.99<span>/month</span></div>
+      </div>
+      <div class="price-body">
+        <ul class="price-list">
+          <li><span class="price-check">✓</span> Zero ads, site-wide</li>
+          <li><span class="price-check">✓</span> Gold member badge on your profile</li>
+          <li><span class="price-check">✓</span> Early access to Vault deep-dives</li>
+          <li><span class="price-check">✓</span> Directly funds independent boxing coverage</li>
+        </ul>
+        <button class="join-btn">Become a Member</button>
+        <div class="price-note">Cancel anytime. No contracts.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="rope-line"></div></div>
+
+<section class="section">
+  <div class="wrap">
+    <h2 class="section-title">The Badge, In Action</h2>
+    <div class="badge-preview">
+      <div class="badge-preview-avatar"></div>
+      <div>
+        <span style="font-family:'Oswald', sans-serif; font-weight:600; font-size:14px;">RingCityRob</span>
+        <span class="member-badge">★ Member</span>
+        <div style="font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--steel-light); margin-top:2px;">142-38 · Champion</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="rope-line"></div></div>
+
+<section class="section">
+  <div class="wrap">
+    <h2 class="section-title">How Early Vault Access Looks</h2>
+    <div class="paywall-demo">
+      <div class="paywall-content">
+        <p>By the time Riddick Bowe hit the canvas for a ten-count in the tenth round of their third meeting, Holyfield had already done something almost nobody expected twice: gotten up.</p>
+        <p>The rivalry started in 1992, when Bowe took Holyfield's title on points in a fight many still call one of the greatest heavyweight bouts ever fought...</p>
+      </div>
+      <div class="paywall-fade"></div>
+      <div class="paywall-lock">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        <h4>Members Get This Early</h4>
+        <p>Free readers can access this piece in 2 days. Members read it now.</p>
+        <button class="join-btn">Unlock With Membership</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-logo">BOUTREPORT</div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+    <div class="footer-note">© 2026 BoutReport. Boxing, told right.</div>
+  </div>
+</footer>
+
+<script>
+  // NOTE: This is a UI preview only. Real sign-in requires Supabase Auth
+  // (Google/X OAuth) wired up when the site is actually built.
+  function previewSignIn(){
+    document.getElementById('signInBtn').style.display = 'none';
+    document.getElementById('accountMenu').classList.add('active');
+  }
+  function previewSignOut(){
+    document.getElementById('accountMenu').classList.remove('active', 'open');
+    document.getElementById('signInBtn').style.display = 'inline-block';
+  }
+  function toggleAccountMenu(){
+    document.getElementById('accountMenu').classList.toggle('open');
+  }
+  document.addEventListener('click', (e) => {
+    if(!e.target.closest('.account')){
+      document.getElementById('accountMenu').classList.remove('open');
+    }
+  });
+
+  const menuToggle = document.getElementById('menuToggle');
+  const drawer = document.getElementById('drawer');
+  const drawerBackdrop = document.getElementById('drawerBackdrop');
+  const drawerClose = document.getElementById('drawerClose');
+
+  function openDrawer(){
+    drawer.classList.add('open');
+    drawerBackdrop.classList.add('open');
+  }
+  function closeDrawer(){
+    drawer.classList.remove('open');
+    drawerBackdrop.classList.remove('open');
+  }
+  menuToggle.addEventListener('click', openDrawer);
+  drawerClose.addEventListener('click', closeDrawer);
+  drawerBackdrop.addEventListener('click', closeDrawer);
+
+  document.querySelectorAll('.drawer-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const group = btn.closest('.drawer-group');
+      const wasOpen = group.classList.contains('open');
+      document.querySelectorAll('.drawer-group').forEach(g => g.classList.remove('open'));
+      if(!wasOpen){ group.classList.add('open'); }
+    });
+  });
+
+  // Desktop dropdown: also allow tap/click to toggle (for touch laptops/tablets)
+  document.querySelectorAll('.nav-item .nav-link').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const item = btn.closest('.nav-item');
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('open'));
+      if(!wasOpen){ item.classList.add('open'); }
+    });
+  });
+  document.addEventListener('click', (e) => {
+    if(!e.target.closest('.nav-item')){
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('open'));
+    }
+  });
+</script>
+</body>
+</html>

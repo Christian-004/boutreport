@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BoutReport — Boxing, Told Right</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<meta name="color-scheme" content="light">
+<style>
+  html{color-scheme: light only;}
+  :root{
+    --ink:#15110D;
+    --ink-soft:#221C15;
+    --canvas:#E7DFCE;
+    --canvas-light:#F0EADD;
+    --oxblood:#7A2331;
+    --oxblood-bright:#9C2E3F;
+    --gold:#B9924A;
+    --steel:#4A463F;
+    --steel-light:#7A7568;
+    --rope-red:#8C2A2A;
+    --rope-blue:#26425C;
+    --card-border: rgba(21,17,13,0.12);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  html, body{
+    background-color:#E7DFCE !important;
+  }
+  body{
+    color:#15110D !important;
+    font-family:'Inter', sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(21,17,13,0.025) 0%, transparent 45%),
+      radial-gradient(circle at 80% 70%, rgba(21,17,13,0.02) 0%, transparent 45%);
+    pointer-events:none;
+    z-index:0;
+  }
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 24px;}
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--oxblood);
+    font-weight:700;
+  }
+
+  /* ---------- Rope divider ---------- */
+  .rope-line{
+    height:3px;
+    width:100%;
+    background:
+      linear-gradient(to right, var(--rope-red) 0 50%, var(--rope-blue) 50% 100%);
+    background-size: 24px 3px;
+    opacity:0.85;
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:var(--canvas);
+    border-bottom:1px solid var(--card-border);
+  }
+  .nav-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 24px;
+  }
+  .logo{
+    font-family:'Anton', sans-serif;
+    font-size:26px;
+    letter-spacing:0.01em;
+    display:flex;
+    align-items:baseline;
+    gap:2px;
+  }
+  .logo .accent{color:var(--oxblood);}
+  nav.links{display:flex; gap:8px;}
+  .nav-item{position:relative;}
+  .nav-link{
+    font-family:'Oswald', sans-serif;
+    font-size:14px;
+    font-weight:500;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--ink);
+    background:none; border:none; cursor:pointer;
+    display:flex; align-items:center; gap:5px;
+    padding:8px 12px;
+    position:relative;
+  }
+  .nav-link::after{
+    content:"";
+    position:absolute; left:12px; bottom:2px;
+    width:0; height:2px;
+    background:var(--oxblood);
+    transition:width 0.2s ease;
+  }
+  .nav-link:hover::after{width:calc(100% - 24px);}
+  .nav-link .caret{width:9px; height:9px; opacity:0.6; transition:transform 0.15s ease;}
+  .nav-item:hover .caret, .nav-item.open .caret{transform:rotate(180deg);}
+  .nav-link-plain{
+    font-family:'Oswald', sans-serif;
+    font-size:14px;
+    font-weight:500;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--ink);
+    padding:8px 12px;
+    position:relative;
+  }
+  .dropdown{
+    position:absolute; top:calc(100% - 4px); left:0;
+    min-width:190px;
+    background-color:#15110D !important;
+    border-radius:3px;
+    box-shadow:0 14px 30px rgba(21,17,13,0.28);
+    padding:8px 0;
+    opacity:0; visibility:hidden;
+    transform:translateY(-6px);
+    transition:opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+    z-index:60;
+  }
+  .nav-item:hover .dropdown, .nav-item.open .dropdown{
+    opacity:1; visibility:visible; transform:translateY(0);
+  }
+  .dropdown a{
+    display:block;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:0.05em; text-transform:uppercase;
+    color:#F2EEE3 !important;
+    padding:10px 18px;
+  }
+  .dropdown a:hover{background:rgba(255,255,255,0.06); color:var(--gold) !important;}
+  .nav-right{display:flex; align-items:center; gap:20px;}
+  .search-btn{
+    width:36px; height:36px;
+    border:1px solid var(--card-border);
+    border-radius:2px;
+    display:flex; align-items:center; justify-content:center;
+    background:transparent;
+    cursor:pointer;
+  }
+  .menu-toggle{display:none; background:none; border:none; cursor:pointer;}
+  @media (max-width:860px){
+    nav.links{display:none;}
+    .menu-toggle{display:block;}
+  }
+
+  /* ---------- Auth: signed out ---------- */
+  .member-nav-link{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700; font-size:11px;
+    text-transform:uppercase; letter-spacing:0.06em;
+    color:var(--gold);
+    padding:6px 10px;
+    border:1px solid rgba(185,146,74,0.4);
+    border-radius:20px;
+    white-space:nowrap;
+  }
+  .member-nav-link:hover{ background-color:rgba(185,146,74,0.1) !important; }
+  @media (max-width:600px){ .member-nav-link{ display:none; } }
+
+  .signin-btn{
+    font-family:'Oswald', sans-serif;
+    font-weight:600; font-size:13px;
+    text-transform:uppercase; letter-spacing:0.04em;
+    color:var(--oxblood);
+    background:transparent;
+    border:1.5px solid var(--oxblood);
+    border-radius:20px;
+    padding:8px 18px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .signin-btn:hover{ background-color:rgba(122,35,49,0.08) !important; }
+
+  /* ---------- Auth: signed in ---------- */
+  .account{ position:relative; display:none; }
+  .account.active{ display:block; }
+  .account-trigger{
+    display:flex; align-items:center; gap:8px;
+    background:none; border:none; cursor:pointer;
+    padding:4px 6px 4px 4px;
+    border-radius:20px;
+  }
+  .account-trigger:hover{ background-color:rgba(21,17,13,0.05) !important; }
+  .account-avatar{
+    width:30px; height:30px; border-radius:50%;
+    background:linear-gradient(135deg, var(--oxblood), var(--gold));
+    flex-shrink:0;
+  }
+  .account-record{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; font-weight:700;
+    color:var(--oxblood);
+  }
+  .account-caret{ width:9px; height:9px; opacity:0.6; }
+  .account-menu{
+    position:absolute; top:calc(100% + 8px); right:0;
+    min-width:210px;
+    background-color:#15110D !important;
+    border-radius:3px;
+    box-shadow:0 14px 30px rgba(21,17,13,0.28);
+    padding:10px 0;
+    opacity:0; visibility:hidden;
+    transform:translateY(-6px);
+    transition:opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+    z-index:60;
+  }
+  .account.open .account-menu{ opacity:1; visibility:visible; transform:translateY(0); }
+  .account-menu-head{
+    padding:10px 16px 12px;
+    border-bottom:1px solid rgba(242,238,227,0.12);
+    margin-bottom:6px;
+  }
+  .account-menu-name{ font-family:'Oswald', sans-serif; font-weight:600; font-size:14px; color:#F2EEE3; }
+  .account-menu-sub{ font-family:'JetBrains Mono', monospace; font-size:11px; color:rgba(242,238,227,0.55); margin-top:2px; }
+  .account-menu a, .account-menu button{
+    display:block; width:100%; text-align:left;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:0.04em; text-transform:uppercase;
+    color:#F2EEE3 !important;
+    background:none; border:none; cursor:pointer;
+    padding:10px 16px;
+  }
+  .account-menu a:hover, .account-menu button:hover{
+    background:rgba(255,255,255,0.06); color:var(--gold) !important;
+  }
+
+  /* ---------- Mobile drawer ---------- */
+  .drawer-backdrop{
+    position:fixed; inset:0;
+    background:rgba(21,17,13,0.55);
+    z-index:80;
+    opacity:0; visibility:hidden;
+    transition:opacity 0.2s ease, visibility 0.2s;
+  }
+  .drawer-backdrop.open{opacity:1; visibility:visible;}
+  .drawer{
+    position:fixed; top:0; right:0; bottom:0;
+    width:min(320px, 84vw);
+    background-color:#F0EADD !important;
+    z-index:90;
+    transform:translateX(100%);
+    transition:transform 0.25s ease;
+    overflow-y:auto;
+    padding:20px 0 40px;
+  }
+  .drawer.open{transform:translateX(0);}
+  .drawer-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:0 20px 18px;
+    border-bottom:1px solid var(--card-border);
+    margin-bottom:8px;
+  }
+  .drawer-close{background:none; border:none; cursor:pointer; padding:6px;}
+  .drawer-group{border-bottom:1px solid var(--card-border);}
+  .drawer-toggle{
+    width:100%;
+    display:flex; align-items:center; justify-content:space-between;
+    background:none; border:none; cursor:pointer;
+    padding:16px 20px;
+    font-family:'Oswald', sans-serif; font-size:15px; font-weight:600;
+    text-transform:uppercase; letter-spacing:0.04em;
+    color:var(--ink);
+  }
+  .drawer-toggle .caret{width:10px; height:10px; transition:transform 0.2s ease;}
+  .drawer-group.open .drawer-toggle .caret{transform:rotate(180deg);}
+  .drawer-sub{
+    max-height:0; overflow:hidden;
+    transition:max-height 0.25s ease;
+  }
+  .drawer-group.open .drawer-sub{max-height:240px;}
+  .drawer-sub a{
+    display:block;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:0.04em; text-transform:uppercase;
+    color:var(--steel);
+    padding:10px 20px 10px 34px;
+  }
+  .drawer-plain{
+    display:block;
+    padding:16px 20px;
+    font-family:'Oswald', sans-serif; font-size:15px; font-weight:600;
+    text-transform:uppercase; letter-spacing:0.04em;
+    color:var(--ink);
+    border-bottom:1px solid var(--card-border);
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:56px 0 48px;
+    position:relative; z-index:1;
+    background-color:#15110D !important;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(122,35,49,0.35) 0%, transparent 50%),
+      radial-gradient(circle at 85% 80%, rgba(185,146,74,0.15) 0%, transparent 50%);
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:28px;
+  }
+  .hero-tag-row{
+    display:flex; align-items:center; gap:10px; margin-bottom:18px;
+  }
+  .tag-pill{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--canvas-light);
+    background:var(--oxblood);
+    padding:5px 10px;
+    border-radius:2px;
+    font-weight:700;
+  }
+  .hero h1{
+    font-family:'Anton', sans-serif;
+    font-size:clamp(38px, 6vw, 76px);
+    line-height:0.98;
+    letter-spacing:0.005em;
+    max-width:16ch;
+    margin-bottom:18px;
+    color:#F2EEE3 !important;
+  }
+  .hero .dek{
+    font-size:18px;
+    color:rgba(242,238,227,0.72) !important;
+    max-width:56ch;
+    margin-bottom:28px;
+  }
+  .hero .eyebrow{
+    color:var(--gold) !important;
+  }
+
+  /* Tale of the Tape — signature module */
+  .totm{
+    border:1px solid rgba(242,238,227,0.15);
+    background:#F2EEE3 !important;
+    border-radius:3px;
+    overflow:hidden;
+    box-shadow:0 12px 32px rgba(0,0,0,0.35);
+  }
+  .totm-head{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--steel-light);
+    padding:10px 18px;
+    border-bottom:1px solid var(--card-border);
+  }
+  .totm-body{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    align-items:center;
+    padding:20px 18px;
+    gap:12px;
+  }
+  .totm-fighter{display:flex; flex-direction:column; gap:2px;}
+  .totm-fighter.right{text-align:right; align-items:flex-end;}
+  .totm-name{
+    font-family:'Oswald', sans-serif;
+    font-weight:600;
+    font-size:19px;
+    text-transform:uppercase;
+  }
+  .totm-record{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    color:var(--oxblood);
+    font-weight:700;
+  }
+  .totm-vs{
+    font-family:'Anton', sans-serif;
+    font-size:15px;
+    color:var(--steel-light);
+    padding:0 6px;
+  }
+  @media (max-width:640px){
+    .totm-name{font-size:15px;}
+  }
+
+  /* ---------- Section headers ---------- */
+  .section{padding:44px 0; position:relative; z-index:1;}
+  .section-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    margin-bottom:26px;
+  }
+  .section-title{
+    font-family:'Anton', sans-serif;
+    font-size:28px;
+    letter-spacing:0.01em;
+    color:#15110D !important;
+  }
+  .section-title .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    color:var(--oxblood);
+    margin-right:10px;
+    font-weight:700;
+  }
+  .see-all{
+    font-family:'Oswald', sans-serif;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    color:var(--oxblood);
+    font-weight:600;
+  }
+
+  /* ---------- Story grid ---------- */
+  .story-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:24px;
+  }
+  @media (max-width:900px){
+    .story-grid{grid-template-columns:repeat(2,1fr);}
+  }
+  @media (max-width:640px){
+    .story-grid{grid-template-columns:1fr;}
+  }
+  .story-card{
+    display:flex; flex-direction:column;
+    border:1px solid var(--card-border);
+    background-color:#F0EADD !important;
+    border-radius:3px;
+    overflow:hidden;
+    transition:transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .story-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 24px rgba(21,17,13,0.12);
+  }
+  .story-thumb{
+    height:150px;
+    background:linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 60%, var(--oxblood) 140%);
+    position:relative;
+  }
+  .story-thumb::after{
+    content:"";
+    position:absolute; inset:0;
+    background-image:repeating-linear-gradient(45deg, rgba(231,223,206,0.03) 0 2px, transparent 2px 6px);
+  }
+  .story-body{padding:18px 18px 20px;}
+  .story-cat{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:700;
+    margin-bottom:8px;
+    display:block;
+  }
+  .story-title{
+    font-family:'Oswald', sans-serif;
+    font-weight:600;
+    font-size:18px;
+    line-height:1.25;
+    margin-bottom:10px;
+    color:#15110D !important;
+  }
+  .story-meta{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--steel-light);
+  }
+
+  /* ---------- Rankings (scorecard) ---------- */
+  .scorecard{
+    border:1px solid var(--card-border);
+    background-color:#F0EADD !important;
+    border-radius:3px;
+    overflow:hidden;
+  }
+  .sc-row{
+    display:grid;
+    grid-template-columns:44px 1fr 90px 60px;
+    align-items:center;
+    padding:14px 18px;
+    border-bottom:1px solid var(--card-border);
+    gap:12px;
+  }
+  .sc-row:last-child{border-bottom:none;}
+  .sc-row.head{
+    background:var(--ink);
+    color:var(--canvas-light);
+  }
+  .sc-row.head span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--canvas-light);
+    opacity:0.7;
+  }
+  .sc-rank{
+    font-family:'Anton', sans-serif;
+    font-size:20px;
+    color:var(--oxblood);
+  }
+  .sc-name{
+    font-family:'Oswald', sans-serif;
+    font-weight:600;
+    font-size:16px;
+    text-transform:uppercase;
+    color:#15110D !important;
+  }
+  .sc-record{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    color:var(--steel);
+  }
+  .sc-move{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    font-weight:700;
+    text-align:right;
+  }
+  .sc-move.up{color:#3E6B4F;}
+  .sc-move.down{color:var(--oxblood);}
+  .sc-move.same{color:var(--steel-light);}
+  @media (max-width:640px){
+    .sc-row{grid-template-columns:32px 1fr 70px 44px; padding:12px 14px;}
+    .sc-name{font-size:14px;}
+  }
+
+  /* ---------- Vault (horizontal archive) ---------- */
+  .vault-scroll{
+    display:flex; gap:18px;
+    overflow-x:auto;
+    padding-bottom:12px;
+    scrollbar-width:thin;
+  }
+  .vault-card{
+    flex:0 0 260px;
+    background:var(--ink);
+    color:var(--canvas-light);
+    border-radius:3px;
+    padding:20px 20px 22px;
+    position:relative;
+    overflow:hidden;
+  }
+  .vault-card::before{
+    content:"";
+    position:absolute; top:0; left:0; right:0; height:4px;
+    background:var(--gold);
+  }
+  .vault-year{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--gold);
+    letter-spacing:0.08em;
+    margin-bottom:10px;
+    display:block;
+  }
+  .vault-title{
+    font-family:'Oswald', sans-serif;
+    font-weight:600;
+    font-size:19px;
+    line-height:1.25;
+    margin-bottom:10px;
+  }
+  .vault-desc{
+    font-size:13px;
+    color:rgba(231,223,206,0.65);
+    line-height:1.5;
+  }
+
+  /* ---------- Newsletter strip ---------- */
+  .newsletter{
+    background:var(--ink);
+    color:var(--canvas-light);
+    padding:48px 0;
+    position:relative; z-index:1;
+  }
+  .newsletter-inner{
+    display:flex; align-items:center; justify-content:space-between; gap:24px;
+    flex-wrap:wrap;
+  }
+  .newsletter h3{
+    font-family:'Anton', sans-serif;
+    font-size:26px;
+    max-width:20ch;
+  }
+  .newsletter p{
+    font-size:14px;
+    color:rgba(231,223,206,0.6);
+    margin-top:6px;
+    max-width:38ch;
+  }
+  .nl-form{display:flex; gap:0;}
+  .nl-form input{
+    font-family:'Inter', sans-serif;
+    font-size:14px;
+    padding:12px 16px;
+    border:1px solid rgba(231,223,206,0.25);
+    background:transparent;
+    color:var(--canvas-light);
+    border-radius:2px 0 0 2px;
+    width:240px;
+  }
+  .nl-form input::placeholder{color:rgba(231,223,206,0.4);}
+  .nl-form button{
+    font-family:'Oswald', sans-serif;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    font-size:13px;
+    padding:12px 20px;
+    background:var(--oxblood);
+    color:var(--canvas-light);
+    border:1px solid var(--oxblood);
+    border-radius:0 2px 2px 0;
+    cursor:pointer;
+  }
+  .nl-form button:hover{background:var(--oxblood-bright);}
+
+  /* ---------- Footer ---------- */
+  footer{padding:40px 0 50px; position:relative; z-index:1;}
+  .footer-inner{
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap:16px;
+  }
+  .footer-logo{
+    font-family:'Anton', sans-serif;
+    font-size:18px;
+  }
+  .footer-links{display:flex; gap:22px;}
+  .footer-links a{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--steel);
+  }
+  .footer-note{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--steel-light);
+    margin-top:18px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav-inner">
+    <a href="index.html" class="logo">BOUT<span class="accent">REPORT</span></a>
+    <nav class="links">
+      <div class="nav-item">
+        <button class="nav-link">News <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+        <div class="dropdown">
+          <a href="#">All News</a>
+          <a href="#">Matchups</a>
+          <a href="#">Analysis</a>
+          <a href="#">Results</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <button class="nav-link">Rankings <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+        <div class="dropdown">
+          <a href="#">P4P Top 10</a>
+          <a href="leaderboard.html">Fan Leaderboard</a>
+          <a href="#">Heavyweight</a>
+          <a href="#">Light Heavyweight</a>
+          <a href="#">Welterweight</a>
+          <a href="#">Lightweight</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <button class="nav-link">The Vault <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+        <div class="dropdown">
+          <a href="#">90s</a>
+          <a href="#">2000s</a>
+          <a href="#">2010s</a>
+          <a href="#">2020s</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <button class="nav-link">Fighters <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+        <div class="dropdown">
+          <a href="#">Heavyweight</a>
+          <a href="#">Light Heavyweight</a>
+          <a href="#">Welterweight</a>
+          <a href="#">Lightweight</a>
+        </div>
+      </div>
+      <a href="#" class="nav-link-plain">Prospects</a>
+      <a href="crossover.html" class="nav-link-plain">Crossover</a>
+      <div class="nav-item">
+        <button class="nav-link">Gear <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+        <div class="dropdown">
+          <a href="gear.html">All Gear</a>
+          <a href="#">Gloves</a>
+          <a href="#">Boxing Shoes</a>
+          <a href="#">Hand Wraps &amp; Headgear</a>
+          <a href="best-running-watches.html">GPS Watches</a>
+          <a href="#">Running Shoes</a>
+          <a href="#">Jump Ropes</a>
+        </div>
+      </div>
+    </nav>
+    <div class="nav-right">
+      <button class="search-btn" aria-label="Search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+
+      <a href="membership.html" class="member-nav-link">★ Membership</a>
+      <button class="signin-btn" id="signInBtn" onclick="previewSignIn()">Sign In</button>
+
+      <div class="account" id="accountMenu">
+        <button class="account-trigger" onclick="toggleAccountMenu()">
+          <div class="account-avatar"></div>
+          <span class="account-record">12-9</span>
+          <svg class="account-caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg>
+        </button>
+        <div class="account-menu">
+          <div class="account-menu-head">
+            <div class="account-menu-name">ChrisFromCarolina</div>
+            <div class="account-menu-sub">Prospect · 12-9 (57%)</div>
+          </div>
+          <a href="#">My Profile</a>
+          <a href="leaderboard.html">Leaderboard</a>
+          <a href="#">My Predictions</a>
+          <button onclick="previewSignOut()">Sign Out</button>
+        </div>
+      </div>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="rope-line"></div>
+</header>
+
+<div class="drawer-backdrop" id="drawerBackdrop"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <a href="index.html" class="logo" style="font-size:20px;">BOUT<span class="accent">REPORT</span></a>
+    <button class="drawer-close" id="drawerClose" aria-label="Close menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="drawer-group">
+    <button class="drawer-toggle">News <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+    <div class="drawer-sub">
+      <a href="#">All News</a><a href="#">Matchups</a><a href="#">Analysis</a><a href="#">Results</a>
+    </div>
+  </div>
+  <div class="drawer-group">
+    <button class="drawer-toggle">Rankings <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+    <div class="drawer-sub">
+      <a href="#">P4P Top 10</a>
+          <a href="leaderboard.html">Fan Leaderboard</a><a href="#">Heavyweight</a><a href="#">Light Heavyweight</a><a href="#">Welterweight</a><a href="#">Lightweight</a>
+    </div>
+  </div>
+  <div class="drawer-group">
+    <button class="drawer-toggle">The Vault <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+    <div class="drawer-sub">
+      <a href="#">90s</a><a href="#">2000s</a><a href="#">2010s</a><a href="#">2020s</a>
+    </div>
+  </div>
+  <div class="drawer-group">
+    <button class="drawer-toggle">Fighters <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+    <div class="drawer-sub">
+      <a href="#">Heavyweight</a><a href="#">Light Heavyweight</a><a href="#">Welterweight</a><a href="#">Lightweight</a>
+    </div>
+  </div>
+  <a href="#" class="drawer-plain">Prospects</a>
+  <a href="crossover.html" class="drawer-plain">Crossover</a>
+  <div class="drawer-group">
+    <button class="drawer-toggle">Gear <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+    <div class="drawer-sub">
+      <a href="gear.html">All Gear</a><a href="#">Gloves</a><a href="#">Boxing Shoes</a><a href="best-running-watches.html">GPS Watches</a><a href="#">Running Shoes</a><a href="#">Jump Ropes</a>
+    </div>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-tag-row">
+      <span class="tag-pill">Breaking · Negotiations</span>
+      <span class="eyebrow">Heavyweight</span>
+    </div>
+    <h1><a href="article-usyk-wilder.html" style="color:inherit;">Usyk's Last Dance Has a Dance Partner: Wilder</a></h1>
+    <p class="dek">Usyk vacated three heavyweight titles to chase one final fight. His team confirmed direct talks with Zuffa Boxing this month — and Wilder's side says they're ready to say yes.</p>
+
+    <div class="totm">
+      <div class="totm-head">Tale of the Tape — Proposed</div>
+      <div class="totm-body">
+        <div class="totm-fighter">
+          <a href="fighter-usyk.html" style="color:inherit;"><span class="totm-name">Usyk</span></a>
+          <span class="totm-record">25-0, 16 KO</span>
+        </div>
+        <span class="totm-vs">VS</span>
+        <div class="totm-fighter right">
+          <span class="totm-name">Wilder</span>
+          <span class="totm-record">45-4-1, 43 KO</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="rope-line"></div></div>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="section-title"><span class="num">01</span>Latest</h2>
+      <a href="#" class="see-all">All News →</a>
+    </div>
+    <div class="story-grid">
+      <div class="story-card">
+        <a href="article-usyk-wilder.html" style="color:inherit;">
+        <div class="story-thumb"></div>
+        <div class="story-body">
+          <span class="story-cat">Matchups</span>
+          <div class="story-title">Allegiant Stadium emerges as front-runner for Usyk-Wilder venue</div>
+          <span class="story-meta">4 min read · Jul 12</span>
+        </div>
+        </a>
+      </div>
+      <div class="story-card">
+        <div class="story-thumb"></div>
+        <div class="story-body">
+          <span class="story-cat">Analysis</span>
+          <div class="story-title">Wilder's power numbers, five years removed from his prime</div>
+          <span class="story-meta">6 min read · Jul 10</span>
+        </div>
+      </div>
+      <div class="story-card">
+        <div class="story-thumb"></div>
+        <div class="story-body">
+          <span class="story-cat">Prospects</span>
+          <div class="story-title">Three cruiserweights who could own 2027</div>
+          <span class="story-meta">5 min read · Jul 8</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="rope-line"></div></div>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="section-title"><span class="num">02</span>P4P Top 10</h2>
+      <a href="#" class="see-all">Full Rankings →</a>
+    </div>
+    <div class="scorecard">
+      <div class="sc-row head">
+        <span>#</span><span>Fighter</span><span>Record</span><span>Move</span>
+      </div>
+      <div class="sc-row">
+        <span class="sc-rank">1</span>
+        <span class="sc-name">Oleksandr Usyk</span>
+        <span class="sc-record">25-0</span>
+        <span class="sc-move same">—</span>
+      </div>
+      <div class="sc-row">
+        <span class="sc-rank">2</span>
+        <span class="sc-name">Naoya Inoue</span>
+        <span class="sc-record">30-0</span>
+        <span class="sc-move same">—</span>
+      </div>
+      <div class="sc-row">
+        <span class="sc-rank">3</span>
+        <span class="sc-name">Terence Crawford</span>
+        <span class="sc-record">42-0</span>
+        <span class="sc-move up">▲ 1</span>
+      </div>
+      <div class="sc-row">
+        <span class="sc-rank">4</span>
+        <span class="sc-name">Shakur Stevenson</span>
+        <span class="sc-record">23-0</span>
+        <span class="sc-move down">▼ 1</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="rope-line"></div></div>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="section-title"><span class="num">03</span>From the Vault</h2>
+      <a href="#" class="see-all">Browse Archive →</a>
+    </div>
+    <div class="vault-scroll">
+      <div class="vault-card">
+        <span class="vault-year">Feb 1993</span>
+        <div class="vault-title">Chavez vs. Whitaker: The Robbery in San Antonio</div>
+        <p class="vault-desc">A draw that still doesn't sit right thirty years later.</p>
+      </div>
+      <div class="vault-card">
+        <span class="vault-year">Nov 1994</span>
+        <div class="vault-title">Foreman's Right Hand, Ten Years in the Making</div>
+        <p class="vault-desc">45 years old and still the heavyweight champion of the world.</p>
+      </div>
+      <div class="vault-card">
+        <span class="vault-year">May 2015</span>
+        <div class="vault-title">Mayweather-Pacquiao: The Fight That Came Five Years Too Late</div>
+        <p class="vault-desc">What we all wanted, delivered exactly wrong.</p>
+      </div>
+      <div class="vault-card">
+        <span class="vault-year">Dec 2018</span>
+        <div class="vault-title">Wilder-Fury I: The Knockdown Nobody Believed</div>
+        <p class="vault-desc">Round 12. Dead to the world. Somehow, not out.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="newsletter">
+  <div class="wrap newsletter-inner">
+    <div>
+      <h3>Get the card before fight week does.</h3>
+      <p>One email, every Sunday. News, rankings movement, and one thing from the Vault worth your time.</p>
+    </div>
+    <div class="nl-form">
+      <input type="email" placeholder="you@email.com">
+      <button>Sign Up</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-logo">BOUTREPORT</div>
+      <div class="footer-links">
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="#">Corrections</a>
+      </div>
+    </div>
+    <div class="footer-note">© 2026 BoutReport. Boxing, told right.</div>
+  </div>
+</footer>
+
+<script>
+  // NOTE: This is a UI preview only. Real sign-in requires Supabase Auth
+  // (Google/X OAuth) wired up when the site is actually built.
+  function previewSignIn(){
+    document.getElementById('signInBtn').style.display = 'none';
+    document.getElementById('accountMenu').classList.add('active');
+  }
+  function previewSignOut(){
+    document.getElementById('accountMenu').classList.remove('active', 'open');
+    document.getElementById('signInBtn').style.display = 'inline-block';
+  }
+  function toggleAccountMenu(){
+    document.getElementById('accountMenu').classList.toggle('open');
+  }
+  document.addEventListener('click', (e) => {
+    if(!e.target.closest('.account')){
+      document.getElementById('accountMenu').classList.remove('open');
+    }
+  });
+
+  const menuToggle = document.getElementById('menuToggle');
+  const drawer = document.getElementById('drawer');
+  const drawerBackdrop = document.getElementById('drawerBackdrop');
+  const drawerClose = document.getElementById('drawerClose');
+
+  function openDrawer(){
+    drawer.classList.add('open');
+    drawerBackdrop.classList.add('open');
+  }
+  function closeDrawer(){
+    drawer.classList.remove('open');
+    drawerBackdrop.classList.remove('open');
+  }
+  menuToggle.addEventListener('click', openDrawer);
+  drawerClose.addEventListener('click', closeDrawer);
+  drawerBackdrop.addEventListener('click', closeDrawer);
+
+  document.querySelectorAll('.drawer-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const group = btn.closest('.drawer-group');
+      const wasOpen = group.classList.contains('open');
+      document.querySelectorAll('.drawer-group').forEach(g => g.classList.remove('open'));
+      if(!wasOpen){ group.classList.add('open'); }
+    });
+  });
+
+  // Desktop dropdown: also allow tap/click to toggle (for touch laptops/tablets)
+  document.querySelectorAll('.nav-item .nav-link').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const item = btn.closest('.nav-item');
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('open'));
+      if(!wasOpen){ item.classList.add('open'); }
+    });
+  });
+  document.addEventListener('click', (e) => {
+    if(!e.target.closest('.nav-item')){
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('open'));
+    }
+  });
+</script>
+</body>
+</html>

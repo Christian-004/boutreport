@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Usyk's Last Dance Has a Dance Partner: Wilder — BoutReport</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<meta name="color-scheme" content="light">
+<style>
+  html{color-scheme: light only;}
+  :root{
+    --ink:#15110D;
+    --ink-soft:#221C15;
+    --canvas:#E7DFCE;
+    --canvas-light:#F0EADD;
+    --oxblood:#7A2331;
+    --oxblood-bright:#9C2E3F;
+    --gold:#B9924A;
+    --steel:#4A463F;
+    --steel-light:#7A7568;
+    --rope-red:#8C2A2A;
+    --rope-blue:#26425C;
+    --card-border: rgba(21,17,13,0.12);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html, body{background-color:#E7DFCE !important;}
+  body{
+    color:#15110D !important;
+    font-family:'Inter', sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 24px;}
+  .narrow{max-width:700px; margin:0 auto; padding:0 24px;}
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--oxblood);
+    font-weight:700;
+  }
+
+  .rope-line{
+    height:3px; width:100%;
+    background: linear-gradient(to right, var(--rope-red) 0 50%, var(--rope-blue) 50% 100%);
+    background-size: 24px 3px;
+    opacity:0.85;
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:var(--canvas);
+    border-bottom:1px solid var(--card-border);
+  }
+  .nav-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 24px;
+  }
+  .logo{
+    font-family:'Anton', sans-serif;
+    font-size:26px;
+    display:flex; align-items:baseline; gap:2px;
+  }
+  .logo .accent{color:var(--oxblood);}
+  nav.links{display:flex; gap:8px;}
+  .nav-item{position:relative;}
+  .nav-link{
+    font-family:'Oswald', sans-serif;
+    font-size:14px;
+    font-weight:500;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--ink);
+    background:none; border:none; cursor:pointer;
+    display:flex; align-items:center; gap:5px;
+    padding:8px 12px;
+    position:relative;
+  }
+  .nav-link::after{
+    content:"";
+    position:absolute; left:12px; bottom:2px;
+    width:0; height:2px;
+    background:var(--oxblood);
+    transition:width 0.2s ease;
+  }
+  .nav-link:hover::after{width:calc(100% - 24px);}
+  .nav-link .caret{width:9px; height:9px; opacity:0.6; transition:transform 0.15s ease;}
+  .nav-item:hover .caret, .nav-item.open .caret{transform:rotate(180deg);}
+  .nav-link-plain{
+    font-family:'Oswald', sans-serif;
+    font-size:14px;
+    font-weight:500;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--ink);
+    padding:8px 12px;
+    position:relative;
+  }
+  .dropdown{
+    position:absolute; top:calc(100% - 4px); left:0;
+    min-width:190px;
+    background-color:#15110D !important;
+    border-radius:3px;
+    box-shadow:0 14px 30px rgba(21,17,13,0.28);
+    padding:8px 0;
+    opacity:0; visibility:hidden;
+    transform:translateY(-6px);
+    transition:opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+    z-index:60;
+  }
+  .nav-item:hover .dropdown, .nav-item.open .dropdown{
+    opacity:1; visibility:visible; transform:translateY(0);
+  }
+  .dropdown a{
+    display:block;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:0.05em; text-transform:uppercase;
+    color:#F2EEE3 !important;
+    padding:10px 18px;
+  }
+  .dropdown a:hover{background:rgba(255,255,255,0.06); color:var(--gold) !important;}
+  .nav-right{display:flex; align-items:center; gap:20px;}
+  .search-btn{
+    width:36px; height:36px;
+    border:1px solid var(--card-border);
+    border-radius:2px;
+    display:flex; align-items:center; justify-content:center;
+    background:transparent;
+    cursor:pointer;
+  }
+  .menu-toggle{display:none; background:none; border:none; cursor:pointer;}
+  @media (max-width:860px){
+    nav.links{display:none;}
+    .menu-toggle{display:block;}
+  }
+
+  /* ---------- Auth: signed out ---------- */
+  .member-nav-link{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700; font-size:11px;
+    text-transform:uppercase; letter-spacing:0.06em;
+    color:var(--gold);
+    padding:6px 10px;
+    border:1px solid rgba(185,146,74,0.4);
+    border-radius:20px;
+    white-space:nowrap;
+  }
+  .member-nav-link:hover{ background-color:rgba(185,146,74,0.1) !important; }
+  @media (max-width:600px){ .member-nav-link{ display:none; } }
+
+  .signin-btn{
+    font-family:'Oswald', sans-serif;
+    font-weight:600; font-size:13px;
+    text-transform:uppercase; letter-spacing:0.04em;
+    color:var(--oxblood);
+    background:transparent;
+    border:1.5px solid var(--oxblood);
+    border-radius:20px;
+    padding:8px 18px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .signin-btn:hover{ background-color:rgba(122,35,49,0.08) !important; }
+
+  /* ---------- Auth: signed in ---------- */
+  .account{ position:relative; display:none; }
+  .account.active{ display:block; }
+  .account-trigger{
+    display:flex; align-items:center; gap:8px;
+    background:none; border:none; cursor:pointer;
+    padding:4px 6px 4px 4px;
+    border-radius:20px;
+  }
+  .account-trigger:hover{ background-color:rgba(21,17,13,0.05) !important; }
+  .account-avatar{
+    width:30px; height:30px; border-radius:50%;
+    background:linear-gradient(135deg, var(--oxblood), var(--gold));
+    flex-shrink:0;
+  }
+  .account-record{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; font-weight:700;
+    color:var(--oxblood);
+  }
+  .account-caret{ width:9px; height:9px; opacity:0.6; }
+  .account-menu{
+    position:absolute; top:calc(100% + 8px); right:0;
+    min-width:210px;
+    background-color:#15110D !important;
+    border-radius:3px;
+    box-shadow:0 14px 30px rgba(21,17,13,0.28);
+    padding:10px 0;
+    opacity:0; visibility:hidden;
+    transform:translateY(-6px);
+    transition:opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+    z-index:60;
+  }
+  .account.open .account-menu{ opacity:1; visibility:visible; transform:translateY(0); }
+  .account-menu-head{
+    padding:10px 16px 12px;
+    border-bottom:1px solid rgba(242,238,227,0.12);
+    margin-bottom:6px;
+  }
+  .account-menu-name{ font-family:'Oswald', sans-serif; font-weight:600; font-size:14px; color:#F2EEE3; }
+  .account-menu-sub{ font-family:'JetBrains Mono', monospace; font-size:11px; color:rgba(242,238,227,0.55); margin-top:2px; }
+  .account-menu a, .account-menu button{
+    display:block; width:100%; text-align:left;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:0.04em; text-transform:uppercase;
+    color:#F2EEE3 !important;
+    background:none; border:none; cursor:pointer;
+    padding:10px 16px;
+  }
+  .account-menu a:hover, .account-menu button:hover{
+    background:rgba(255,255,255,0.06); color:var(--gold) !important;
+  }
+
+  /* ---------- Sign-in modal ---------- */
+  .modal-backdrop{
+    position:fixed; inset:0;
+    background:rgba(21,17,13,0.6);
+    z-index:100;
+    display:none;
+    align-items:center; justify-content:center;
+    padding:20px;
+  }
+  .modal-backdrop.open{ display:flex; }
+  .modal-card{
+    width:100%; max-width:380px;
+    background-color:#F0EADD !important;
+    border-radius:4px;
+    overflow:hidden;
+    box-shadow:0 24px 60px rgba(0,0,0,0.4);
+  }
+  .modal-head{
+    background-color:#15110D !important;
+    padding:26px 24px 22px;
+    text-align:center;
+    position:relative;
+  }
+  .modal-close{
+    position:absolute; top:14px; right:14px;
+    background:none; border:none; cursor:pointer;
+    color:rgba(242,238,227,0.6);
+    padding:4px;
+  }
+  .modal-close:hover{ color:#F2EEE3; }
+  .modal-eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--gold) !important; font-weight:700; margin-bottom:8px; display:block;
+  }
+  .modal-head h3{
+    font-family:'Anton', sans-serif;
+    font-size:24px;
+    color:#F2EEE3 !important;
+  }
+  .modal-body{ padding:24px; }
+  .modal-body p{
+    font-size:14px; color:var(--steel); line-height:1.5; margin-bottom:20px; text-align:center;
+  }
+  .oauth-btn{
+    width:100%;
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:14px;
+    text-transform:uppercase; letter-spacing:0.03em;
+    padding:13px;
+    border:1.5px solid var(--card-border);
+    background-color:#F2EEE3 !important;
+    color:var(--ink);
+    border-radius:3px;
+    cursor:pointer;
+    margin-bottom:10px;
+  }
+  .oauth-btn:hover{ border-color:var(--oxblood); }
+  .oauth-btn.x-btn{ background-color:var(--ink) !important; color:#F2EEE3; border-color:var(--ink); }
+  .modal-note{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; color:var(--steel-light);
+    text-align:center; margin-top:14px;
+  }
+  .drawer-backdrop{
+    position:fixed; inset:0;
+    background:rgba(21,17,13,0.55);
+    z-index:80;
+    opacity:0; visibility:hidden;
+    transition:opacity 0.2s ease, visibility 0.2s;
+  }
+  .drawer-backdrop.open{opacity:1; visibility:visible;}
+  .drawer{
+    position:fixed; top:0; right:0; bottom:0;
+    width:min(320px, 84vw);
+    background-color:#F0EADD !important;
+    z-index:90;
+    transform:translateX(100%);
+    transition:transform 0.25s ease;
+    overflow-y:auto;
+    padding:20px 0 40px;
+  }
+  .drawer.open{transform:translateX(0);}
+  .drawer-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:0 20px 18px;
+    border-bottom:1px solid var(--card-border);
+    margin-bottom:8px;
+  }
+  .drawer-close{background:none; border:none; cursor:pointer; padding:6px;}
+  .drawer-group{border-bottom:1px solid var(--card-border);}
+  .drawer-toggle{
+    width:100%;
+    display:flex; align-items:center; justify-content:space-between;
+    background:none; border:none; cursor:pointer;
+    padding:16px 20px;
+    font-family:'Oswald', sans-serif; font-size:15px; font-weight:600;
+    text-transform:uppercase; letter-spacing:0.04em;
+    color:var(--ink);
+  }
+  .drawer-toggle .caret{width:10px; height:10px; transition:transform 0.2s ease;}
+  .drawer-group.open .drawer-toggle .caret{transform:rotate(180deg);}
+  .drawer-sub{
+    max-height:0; overflow:hidden;
+    transition:max-height 0.25s ease;
+  }
+  .drawer-group.open .drawer-sub{max-height:240px;}
+  .drawer-sub a{
+    display:block;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:0.04em; text-transform:uppercase;
+    color:var(--steel);
+    padding:10px 20px 10px 34px;
+  }
+  .drawer-plain{
+    display:block;
+    padding:16px 20px;
+    font-family:'Oswald', sans-serif; font-size:15px; font-weight:600;
+    text-transform:uppercase; letter-spacing:0.04em;
+    color:var(--ink);
+    border-bottom:1px solid var(--card-border);
+  }
+
+
+  /* ---------- Mobile drawer ---------- */
+  .drawer-backdrop{
+    position:fixed; inset:0;
+    background:rgba(21,17,13,0.55);
+    z-index:80;
+    opacity:0; visibility:hidden;
+    transition:opacity 0.2s ease, visibility 0.2s;
+  }
+  .drawer-backdrop.open{opacity:1; visibility:visible;}
+  .drawer{
+    position:fixed; top:0; right:0; bottom:0;
+    width:min(320px, 84vw);
+    background-color:#F0EADD !important;
+    z-index:90;
+    transform:translateX(100%);
+    transition:transform 0.25s ease;
+    overflow-y:auto;
+    padding:20px 0 40px;
+  }
+  .drawer.open{transform:translateX(0);}
+  .drawer-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:0 20px 18px;
+    border-bottom:1px solid var(--card-border);
+    margin-bottom:8px;
+  }
+  .drawer-close{background:none; border:none; cursor:pointer; padding:6px;}
+  .drawer-group{border-bottom:1px solid var(--card-border);}
+  .drawer-toggle{
+    width:100%;
+    display:flex; align-items:center; justify-content:space-between;
+    background:none; border:none; cursor:pointer;
+    padding:16px 20px;
+    font-family:'Oswald', sans-serif; font-size:15px; font-weight:600;
+    text-transform:uppercase; letter-spacing:0.04em;
+    color:var(--ink);
+  }
+  .drawer-toggle .caret{width:10px; height:10px; transition:transform 0.2s ease;}
+  .drawer-group.open .drawer-toggle .caret{transform:rotate(180deg);}
+  .drawer-sub{
+    max-height:0; overflow:hidden;
+    transition:max-height 0.25s ease;
+  }
+  .drawer-group.open .drawer-sub{max-height:240px;}
+  .drawer-sub a{
+    display:block;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:0.04em; text-transform:uppercase;
+    color:var(--steel);
+    padding:10px 20px 10px 34px;
+  }
+  .drawer-plain{
+    display:block;
+    padding:16px 20px;
+    font-family:'Oswald', sans-serif; font-size:15px; font-weight:600;
+    text-transform:uppercase; letter-spacing:0.04em;
+    color:var(--ink);
+    border-bottom:1px solid var(--card-border);
+  }
+
+  /* ---------- Article header (dark, poster-style) ---------- */
+  .article-header{
+    padding:44px 0 40px;
+    background-color:#15110D !important;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(122,35,49,0.35) 0%, transparent 50%),
+      radial-gradient(circle at 85% 80%, rgba(185,146,74,0.15) 0%, transparent 50%);
+  }
+  .article-header .eyebrow-row{
+    display:flex; align-items:center; gap:10px; margin-bottom:16px;
+  }
+  .tag-pill{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+    color:#F2EEE3; background:var(--oxblood);
+    padding:5px 10px; border-radius:2px; font-weight:700;
+  }
+  .article-header .eyebrow{color:var(--gold) !important;}
+  .breadcrumb{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:0.04em;
+    color:rgba(242,238,227,0.5) !important;
+    margin-bottom:16px;
+  }
+  .breadcrumb a{ color:rgba(242,238,227,0.75) !important; }
+  .breadcrumb a:hover{ color:var(--gold) !important; }
+  .breadcrumb .sep{ color:rgba(242,238,227,0.3); margin:0 6px; }
+  .article-header h1{
+    font-family:'Anton', sans-serif;
+    font-size:clamp(32px, 5vw, 54px);
+    line-height:1.04;
+    color:#F2EEE3 !important;
+    margin-bottom:16px;
+    max-width:20ch;
+  }
+  .article-header .dek{
+    font-size:18px;
+    color:rgba(242,238,227,0.72) !important;
+    max-width:60ch;
+    margin-bottom:24px;
+  }
+  .byline{
+    display:flex; align-items:center; gap:12px;
+    padding-top:20px;
+    border-top:1px solid rgba(242,238,227,0.15);
+  }
+  .avatar{
+    width:38px; height:38px; border-radius:50%;
+    background:linear-gradient(135deg, var(--oxblood), var(--gold));
+    flex-shrink:0;
+  }
+  .byline-text{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:rgba(242,238,227,0.6);
+    line-height:1.5;
+  }
+  .byline-name{
+    color:#F2EEE3;
+    font-weight:700;
+  }
+
+  /* ---------- Tale of the tape (reused module) ---------- */
+  .totm{
+    border:1px solid rgba(242,238,227,0.15);
+    background:#F2EEE3 !important;
+    border-radius:3px;
+    overflow:hidden;
+    box-shadow:0 12px 32px rgba(0,0,0,0.35);
+    margin-top:28px;
+  }
+  .totm-head{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--steel-light);
+    padding:10px 18px;
+    border-bottom:1px solid var(--card-border);
+  }
+  .totm-body{
+    display:grid; grid-template-columns:1fr auto 1fr;
+    align-items:center; padding:20px 18px; gap:12px;
+  }
+  .totm-fighter{display:flex; flex-direction:column; gap:2px;}
+  .totm-fighter.right{text-align:right; align-items:flex-end;}
+  .totm-name{
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:19px; text-transform:uppercase;
+  }
+  .totm-record{
+    font-family:'JetBrains Mono', monospace; font-size:13px; color:var(--oxblood); font-weight:700;
+  }
+  .totm-vs{
+    font-family:'Anton', sans-serif; font-size:15px; color:var(--steel-light); padding:0 6px;
+  }
+  @media (max-width:640px){ .totm-name{font-size:15px;} }
+
+  /* ---------- Article body ---------- */
+  .article-body{ padding:48px 0 8px; }
+  .article-body p{
+    font-size:17px; line-height:1.75;
+    color:var(--ink);
+    margin-bottom:22px;
+  }
+  .article-body h2{
+    font-family:'Oswald', sans-serif;
+    font-weight:600;
+    font-size:24px;
+    letter-spacing:0.01em;
+    margin:44px 0 18px;
+    color:var(--ink);
+  }
+  .article-body strong{ color:var(--oxblood); }
+
+  /* Quick Hits box */
+  .quick-hits{
+    border:1px solid var(--card-border);
+    background-color:#F0EADD !important;
+    border-radius:3px;
+    margin:32px 0;
+    overflow:hidden;
+  }
+  .quick-hits .qh-head{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--oxblood); font-weight:700;
+    padding:14px 20px;
+    border-bottom:1px solid var(--card-border);
+  }
+  .quick-hits ul{ list-style:none; padding:16px 20px 20px; }
+  .quick-hits li{
+    font-size:15px;
+    color:var(--ink);
+    padding-left:20px;
+    position:relative;
+    margin-bottom:10px;
+    line-height:1.5;
+  }
+  .quick-hits li:last-child{ margin-bottom:0; }
+  .quick-hits li::before{
+    content:"●";
+    color:var(--oxblood);
+    font-size:9px;
+    position:absolute;
+    left:0; top:6px;
+  }
+  .quick-hits li strong{ color:var(--ink); font-family:'JetBrains Mono', monospace; }
+
+  /* Take / callout box */
+  .take-box{
+    border-left:4px solid var(--oxblood);
+    background-color:#F0EADD !important;
+    padding:20px 22px;
+    margin:32px 0;
+    border-radius:0 3px 3px 0;
+  }
+  .take-box .take-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--oxblood); font-weight:700;
+    margin-bottom:8px;
+    display:block;
+  }
+  .take-box p{
+    font-family:'Oswald', sans-serif;
+    font-size:18px;
+    font-weight:500;
+    color:var(--ink);
+    line-height:1.5;
+    margin-bottom:0;
+  }
+
+  /* Author sign-off */
+  .signoff{
+    display:flex; align-items:center; gap:14px;
+    padding:28px 0;
+    margin-top:12px;
+    border-top:1px solid var(--card-border);
+  }
+  .signoff-text{ font-size:13px; color:var(--steel); }
+  .signoff-name{ font-family:'Oswald', sans-serif; font-weight:600; font-size:15px; color:var(--ink); }
+
+  /* ---------- Fan Prediction widget ---------- */
+  .predict{
+    border:1px solid var(--card-border);
+    background-color:#F0EADD !important;
+    border-radius:3px;
+    overflow:hidden;
+    margin:36px 0;
+  }
+  .predict-head{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--oxblood); font-weight:700;
+    padding:14px 20px;
+    border-bottom:1px solid var(--card-border);
+  }
+  .predict-body{ padding:20px; }
+  .predict-buttons{
+    display:grid; grid-template-columns:1fr 1fr; gap:12px;
+    margin-bottom:16px;
+  }
+  .predict-btn{
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:15px;
+    text-transform:uppercase; letter-spacing:0.03em;
+    padding:14px 10px;
+    border:1.5px solid var(--card-border);
+    background:transparent;
+    color:var(--ink);
+    border-radius:3px;
+    cursor:pointer;
+    transition:border-color 0.15s ease, background 0.15s ease;
+  }
+  .predict-btn:hover{ border-color:var(--oxblood); }
+  .predict-btn.picked{
+    border-color:var(--oxblood);
+    background-color:rgba(122,35,49,0.08) !important;
+    color:var(--oxblood);
+  }
+  .predict-bar{
+    display:flex; height:10px; border-radius:5px; overflow:hidden;
+    background:var(--card-border);
+    margin-bottom:8px;
+  }
+  .predict-bar-fill{
+    background:var(--oxblood);
+    transition:width 0.3s ease;
+  }
+  .predict-bar-fill.right{ background:var(--rope-blue); }
+  .predict-labels{
+    display:flex; justify-content:space-between;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; color:var(--steel-light);
+  }
+  .predict-note{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; color:var(--steel-light);
+    text-align:center; margin-top:12px;
+  }
+
+  /* ---------- Reaction + Share bar ---------- */
+  .engage-bar{
+    display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:16px;
+    padding:20px 0;
+    border-top:1px solid var(--card-border);
+    border-bottom:1px solid var(--card-border);
+    margin:32px 0;
+  }
+  .reactions{ display:flex; gap:8px; }
+  .reaction-btn{
+    display:flex; align-items:center; gap:6px;
+    font-family:'JetBrains Mono', monospace; font-size:13px;
+    padding:8px 14px;
+    border:1px solid var(--card-border);
+    border-radius:20px;
+    background:transparent;
+    cursor:pointer;
+    color:var(--ink);
+    transition:border-color 0.15s ease, background 0.15s ease;
+  }
+  .reaction-btn:hover{ border-color:var(--oxblood); }
+  .reaction-btn.active{
+    border-color:var(--oxblood);
+    background-color:rgba(122,35,49,0.08) !important;
+    color:var(--oxblood);
+  }
+  .reaction-count{ font-weight:700; }
+  .share-row{ display:flex; align-items:center; gap:10px; }
+  .share-label{
+    font-family:'JetBrains Mono', monospace; font-size:11px;
+    text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--steel-light);
+  }
+  .share-btn{
+    width:34px; height:34px;
+    border:1px solid var(--card-border);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    background:transparent;
+    cursor:pointer;
+    color:var(--ink);
+    transition:border-color 0.15s ease, background 0.15s ease;
+  }
+  .share-btn:hover{ border-color:var(--oxblood); color:var(--oxblood); }
+
+  /* ---------- Comments ---------- */
+  .comments-head{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:20px;
+  }
+  .comments-count{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px; color:var(--steel-light);
+  }
+  .comment-form{
+    display:flex; gap:12px;
+    margin-bottom:28px;
+  }
+  .comment-form textarea{
+    flex:1;
+    font-family:'Inter', sans-serif; font-size:14px;
+    padding:12px 14px;
+    border:1px solid var(--card-border);
+    border-radius:3px;
+    background-color:#F0EADD !important;
+    color:var(--ink);
+    resize:vertical;
+    min-height:44px;
+  }
+  .comment-form button{
+    font-family:'Oswald', sans-serif; font-weight:600; text-transform:uppercase;
+    letter-spacing:0.05em; font-size:13px;
+    padding:0 20px;
+    background:var(--oxblood); color:#F2EEE3;
+    border:1px solid var(--oxblood); border-radius:3px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .comment{
+    display:flex; gap:12px;
+    padding:16px 0;
+    border-bottom:1px solid var(--card-border);
+  }
+  .comment-avatar{
+    width:36px; height:36px; border-radius:50%; flex-shrink:0;
+    background:linear-gradient(135deg, var(--oxblood), var(--gold));
+  }
+  .comment-name{
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:14px;
+    color:var(--ink);
+  }
+  .fan-record{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; font-weight:700;
+    color:var(--oxblood);
+    background-color:rgba(122,35,49,0.08) !important;
+    padding:2px 7px;
+    border-radius:3px;
+    margin-left:8px;
+  }
+  .fan-tier{
+    font-family:'JetBrains Mono', monospace;
+    font-size:9px; letter-spacing:0.06em; text-transform:uppercase;
+    font-weight:700;
+    padding:2px 6px;
+    border-radius:3px;
+    margin-left:6px;
+  }
+  .fan-tier.champion{ color:var(--gold); background-color:rgba(185,146,74,0.12) !important; }
+  .fan-tier.contender{ color:var(--steel); background-color:rgba(74,70,63,0.1) !important; }
+  .fan-tier.prospect{ color:var(--steel-light); background-color:rgba(74,70,63,0.06) !important; }
+  .member-badge{
+    display:inline-flex; align-items:center; gap:3px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:9px; letter-spacing:0.05em; text-transform:uppercase;
+    font-weight:700;
+    color:var(--gold);
+    background-color:rgba(185,146,74,0.15) !important;
+    padding:2px 7px; border-radius:3px;
+    margin-left:6px;
+  }
+  .comment-time{
+    font-family:'JetBrains Mono', monospace; font-size:11px;
+    color:var(--steel-light); margin-left:8px;
+  }
+  .comment-text{
+    font-size:14px; color:var(--ink); line-height:1.55; margin:6px 0 8px;
+  }
+  .comment-actions{
+    display:flex; gap:16px;
+    font-family:'JetBrains Mono', monospace; font-size:12px;
+    color:var(--steel-light);
+  }
+  .comment-actions span{ cursor:pointer; }
+  .comment-actions span:hover{ color:var(--oxblood); }
+
+  /* ---------- Related ---------- */
+  .section{ padding:44px 0; }
+  .section-title{
+    font-family:'Anton', sans-serif;
+    font-size:24px;
+    color:#15110D !important;
+    margin-bottom:24px;
+  }
+  .story-grid{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:24px;
+  }
+  @media (max-width:900px){ .story-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:640px){ .story-grid{grid-template-columns:1fr;} }
+  .story-card{
+    display:flex; flex-direction:column;
+    border:1px solid var(--card-border);
+    background-color:#F0EADD !important;
+    border-radius:3px; overflow:hidden;
+    transition:transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .story-card:hover{ transform:translateY(-3px); box-shadow:0 10px 24px rgba(21,17,13,0.12); }
+  .story-thumb{
+    height:130px;
+    background:linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 60%, var(--oxblood) 140%);
+  }
+  .story-body-sm{ padding:16px 16px 18px; }
+  .story-cat{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--gold); font-weight:700; margin-bottom:8px; display:block;
+  }
+  .story-title{
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:16px; line-height:1.25;
+    color:#15110D !important;
+    margin-bottom:8px;
+  }
+  .story-meta{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--steel-light); }
+
+  /* ---------- Newsletter ---------- */
+  .newsletter{ background:var(--ink); color:var(--canvas-light); padding:44px 0; }
+  .newsletter-inner{
+    display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;
+  }
+  .newsletter h3{ font-family:'Anton', sans-serif; font-size:24px; max-width:20ch; }
+  .newsletter p{ font-size:14px; color:rgba(231,223,206,0.6); margin-top:6px; max-width:38ch; }
+  .nl-form{ display:flex; }
+  .nl-form input{
+    font-family:'Inter', sans-serif; font-size:14px; padding:12px 16px;
+    border:1px solid rgba(231,223,206,0.25); background:transparent; color:var(--canvas-light);
+    border-radius:2px 0 0 2px; width:220px;
+  }
+  .nl-form input::placeholder{ color:rgba(231,223,206,0.4); }
+  .nl-form button{
+    font-family:'Oswald', sans-serif; font-weight:600; text-transform:uppercase; letter-spacing:0.05em;
+    font-size:13px; padding:12px 20px; background:var(--oxblood); color:var(--canvas-light);
+    border:1px solid var(--oxblood); border-radius:0 2px 2px 0; cursor:pointer;
+  }
+
+  /* ---------- Footer ---------- */
+  footer{ padding:36px 0 46px; }
+  .footer-inner{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+  .footer-logo{ font-family:'Anton', sans-serif; font-size:18px; }
+  .footer-links{ display:flex; gap:22px; }
+  .footer-links a{
+    font-family:'JetBrains Mono', monospace; font-size:11px; text-transform:uppercase;
+    letter-spacing:0.06em; color:var(--steel);
+  }
+  .footer-note{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--steel-light); margin-top:16px; }
+
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav-inner">
+    <a href="index.html" class="logo">BOUT<span class="accent">REPORT</span></a>
+    <nav class="links">
+      <div class="nav-item">
+        <button class="nav-link">News <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+        <div class="dropdown">
+          <a href="#">All News</a>
+          <a href="#">Matchups</a>
+          <a href="#">Analysis</a>
+          <a href="#">Results</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <button class="nav-link">Rankings <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+        <div class="dropdown">
+          <a href="#">P4P Top 10</a>
+          <a href="leaderboard.html">Fan Leaderboard</a>
+          <a href="#">Heavyweight</a>
+          <a href="#">Light Heavyweight</a>
+          <a href="#">Welterweight</a>
+          <a href="#">Lightweight</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <button class="nav-link">The Vault <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+        <div class="dropdown">
+          <a href="#">90s</a>
+          <a href="#">2000s</a>
+          <a href="#">2010s</a>
+          <a href="#">2020s</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <button class="nav-link">Fighters <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+        <div class="dropdown">
+          <a href="#">Heavyweight</a>
+          <a href="#">Light Heavyweight</a>
+          <a href="#">Welterweight</a>
+          <a href="#">Lightweight</a>
+        </div>
+      </div>
+      <a href="#" class="nav-link-plain">Prospects</a>
+      <a href="crossover.html" class="nav-link-plain">Crossover</a>
+      <div class="nav-item">
+        <button class="nav-link">Gear <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+        <div class="dropdown">
+          <a href="gear.html">All Gear</a>
+          <a href="#">Gloves</a>
+          <a href="#">Boxing Shoes</a>
+          <a href="#">Hand Wraps &amp; Headgear</a>
+          <a href="best-running-watches.html">GPS Watches</a>
+          <a href="#">Running Shoes</a>
+          <a href="#">Jump Ropes</a>
+        </div>
+      </div>
+    </nav>
+    <div class="nav-right">
+      <button class="search-btn" aria-label="Search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+
+      <a href="membership.html" class="member-nav-link">★ Membership</a>
+      <button class="signin-btn" id="signInBtn" onclick="previewSignIn()">Sign In</button>
+
+      <div class="account" id="accountMenu">
+        <button class="account-trigger" onclick="toggleAccountMenu()">
+          <div class="account-avatar"></div>
+          <span class="account-record">12-9</span>
+          <svg class="account-caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg>
+        </button>
+        <div class="account-menu">
+          <div class="account-menu-head">
+            <div class="account-menu-name">ChrisFromCarolina</div>
+            <div class="account-menu-sub">Prospect · 12-9 (57%)</div>
+          </div>
+          <a href="#">My Profile</a>
+          <a href="leaderboard.html">Leaderboard</a>
+          <a href="#">My Predictions</a>
+          <button onclick="previewSignOut()">Sign Out</button>
+        </div>
+      </div>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="rope-line"></div>
+</header>
+
+<div class="drawer-backdrop" id="drawerBackdrop"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <a href="index.html" class="logo" style="font-size:20px;">BOUT<span class="accent">REPORT</span></a>
+    <button class="drawer-close" id="drawerClose" aria-label="Close menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="drawer-group">
+    <button class="drawer-toggle">News <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+    <div class="drawer-sub">
+      <a href="#">All News</a><a href="#">Matchups</a><a href="#">Analysis</a><a href="#">Results</a>
+    </div>
+  </div>
+  <div class="drawer-group">
+    <button class="drawer-toggle">Rankings <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+    <div class="drawer-sub">
+      <a href="#">P4P Top 10</a>
+          <a href="leaderboard.html">Fan Leaderboard</a><a href="#">Heavyweight</a><a href="#">Light Heavyweight</a><a href="#">Welterweight</a><a href="#">Lightweight</a>
+    </div>
+  </div>
+  <div class="drawer-group">
+    <button class="drawer-toggle">The Vault <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+    <div class="drawer-sub">
+      <a href="#">90s</a><a href="#">2000s</a><a href="#">2010s</a><a href="#">2020s</a>
+    </div>
+  </div>
+  <div class="drawer-group">
+    <button class="drawer-toggle">Fighters <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+    <div class="drawer-sub">
+      <a href="#">Heavyweight</a><a href="#">Light Heavyweight</a><a href="#">Welterweight</a><a href="#">Lightweight</a>
+    </div>
+  </div>
+  <a href="#" class="drawer-plain">Prospects</a>
+  <a href="crossover.html" class="drawer-plain">Crossover</a>
+  <div class="drawer-group">
+    <button class="drawer-toggle">Gear <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
+    <div class="drawer-sub">
+      <a href="gear.html">All Gear</a><a href="#">Gloves</a><a href="#">Boxing Shoes</a><a href="best-running-watches.html">GPS Watches</a><a href="#">Running Shoes</a><a href="#">Jump Ropes</a>
+    </div>
+  </div>
+</div>
+
+<section class="article-header">
+  <div class="narrow">
+    <div class="breadcrumb" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+      <span><a href="index.html">Home</a><span class="sep">/</span><a href="#">News</a><span class="sep">/</span><a href="#">Matchups</a></span>
+      <a href="javascript:history.back()" style="display:flex; align-items:center; gap:4px;">← Back</a>
+    </div>
+    <div class="eyebrow-row">
+      <span class="tag-pill">Breaking · Negotiations</span>
+      <span class="eyebrow">Heavyweight</span>
+    </div>
+    <h1>Usyk's Last Dance Has a Dance Partner: Wilder</h1>
+    <p class="dek">Usyk vacated three heavyweight titles to chase one final fight. His team confirmed direct talks with Zuffa Boxing this month — and Wilder's side says they're ready to say yes.</p>
+
+    <div class="totm">
+      <div class="totm-head">Tale of the Tape — Proposed</div>
+      <div class="totm-body">
+        <div class="totm-fighter">
+          <a href="fighter-usyk.html" style="color:inherit;"><span class="totm-name">Usyk</span></a>
+          <span class="totm-record">25-0, 16 KO</span>
+        </div>
+        <span class="totm-vs">VS</span>
+        <div class="totm-fighter right">
+          <span class="totm-name">Wilder</span>
+          <span class="totm-record">45-4-1, 43 KO</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="byline">
+      <div class="avatar"></div>
+      <div class="byline-text">
+        <span class="byline-name">Chris</span> · BoutReport<br>
+        Jul 14, 2026 · 4 min read
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="rope-line"></div></div>
+
+<section class="article-body">
+  <div class="narrow">
+    <p>Oleksandr Usyk just walked away from three heavyweight world titles. Not because he lost them. Because he doesn't want them anymore.</p>
+    <p>He wants one more fight. And he's already picked the guy.</p>
+
+    <h2>The Setup</h2>
+    <p>Last month, Usyk vacated his WBC, WBA, and IBF belts — the same three he took off Daniel Dubois less than a year ago. He kept the Ring Magazine title. Everything else, gone.</p>
+    <p>His team didn't dress it up. Usyk is 39, unbeaten at 25-0, and he's told anyone who'll listen that he's got maybe two or three fights left in him, tops. He's beaten Fury twice. Joshua twice. Dubois twice. There's one name from his era he's never touched.</p>
+    <p><strong>Deontay Wilder.</strong></p>
+
+    <h2>Where Things Stand</h2>
+    <p>As of this month, Usyk's team confirmed they're in direct talks with Zuffa Boxing — Dana White's new promotion, backed by TKO and Saudi money — to make it happen. Nothing's signed. No date, no venue, no purse numbers. But both sides are talking, and Wilder's side isn't playing hard to get: his manager has said flatly that if the offer comes, Wilder takes it.</p>
+    <p>Early signals point to the U.S. — possibly Las Vegas, possibly Allegiant Stadium — which matters, because Usyk has never fought a marquee bout on American soil. Whispers put a fight later this year, though nothing's locked.</p>
+
+    <div class="quick-hits">
+      <div class="qh-head">Quick Hits</div>
+      <ul>
+        <li><strong>Usyk:</strong> 25-0, 16 KOs, 39 years old, hasn't lost since turning pro</li>
+        <li><strong>Wilder:</strong> 45-4-1, 43 KOs, coming off a scrappy split-decision win over Derek Chisora in April — his first fight back after a two-fight skid</li>
+        <li><strong>The stakes:</strong> Usyk's final fight, full stop. Win or lose, he's said this era of his career is closing.</li>
+      </ul>
+    </div>
+
+    <h2>Why This Fight, Why Now</h2>
+    <p>On paper, this isn't the toughest matchup left for Usyk. Wilder's chin and volume have both slipped since his prime, and he's 2-3 in his last five going into the Chisora win. A younger, hungrier name might make for a "better" farewell on pure boxing merit.</p>
+    <p>But Wilder is still the most dangerous single punch in the heavyweight division, prime or not. One shot changes everything.</p>
+
+    <div class="predict">
+      <div class="predict-head">Who You Got?</div>
+      <div class="predict-body">
+        <div class="predict-buttons">
+          <button class="predict-btn" id="pickLeft" onclick="castVote('left')">Usyk</button>
+          <button class="predict-btn" id="pickRight" onclick="castVote('right')">Wilder</button>
+        </div>
+        <div class="predict-bar">
+          <div class="predict-bar-fill" id="barLeft" style="width:64%"></div>
+          <div class="predict-bar-fill right" id="barRight" style="width:36%"></div>
+        </div>
+        <div class="predict-labels">
+          <span id="pctLeft">64%</span>
+          <span id="pctRight">36%</span>
+        </div>
+        <div class="predict-note" id="voteCount">1,204 fans have voted</div>
+      </div>
+    </div>
+
+    <div class="take-box">
+      <span class="take-label">The Take</span>
+      <p>[Your personal take goes here — how do you actually see this playing out?]</p>
+    </div>
+
+    <p>BoutReport will track this one as it develops. No contracts yet — but both camps are talking, and that's usually how these things start.</p>
+
+    <div class="signoff">
+      <div class="avatar"></div>
+      <div>
+        <div class="signoff-name">Chris</div>
+        <div class="signoff-text">Founder, BoutReport. Watching fights since the early '90s.</div>
+      </div>
+    </div>
+
+    <div class="engage-bar">
+      <div class="reactions">
+        <button class="reaction-btn" onclick="toggleReaction(this)">🔥 <span class="reaction-count">318</span></button>
+        <button class="reaction-btn" onclick="toggleReaction(this)">🧐 <span class="reaction-count">92</span></button>
+        <button class="reaction-btn" onclick="toggleReaction(this)">💯 <span class="reaction-count">156</span></button>
+      </div>
+      <div class="share-row">
+        <span class="share-label">Share</span>
+        <button class="share-btn" aria-label="Share on X">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23 22h-6.9l-5.4-6.9L4.4 22H1.3l8.1-9.3L1 2h7.1l4.9 6.3L18.9 2zm-1.2 18h1.9L7.4 4h-2l12.3 16z"/></svg>
+        </button>
+        <button class="share-btn" aria-label="Copy link" onclick="copyLink(this)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.07 0l2.83-2.83a5 5 0 00-7.07-7.07L11.5 4.5"/><path d="M14 11a5 5 0 00-7.07 0L4.1 13.83a5 5 0 007.07 7.07L12.5 19.5"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="comments-section">
+      <div class="comments-head">
+        <h2 class="section-title" style="margin-bottom:0;">Comments</h2>
+        <span class="comments-count">47 comments</span>
+      </div>
+      <div class="comment-form">
+        <textarea id="commentInput" placeholder="What's your take on this fight?" onfocus="gateCommentFocus(this)"></textarea>
+        <button onclick="postComment()">Post</button>
+      </div>
+      <div class="comment">
+        <div class="comment-avatar"></div>
+        <div>
+          <span class="comment-name">RingCityRob</span><span class="fan-record">142-38</span><span class="fan-tier champion">Champion</span><span class="member-badge">★ Member</span><span class="comment-time">2h ago</span>
+          <p class="comment-text">Wilder's power is still the great equalizer no matter what anyone says. One shot and it's over regardless of who's landing more.</p>
+          <div class="comment-actions"><span>Reply</span><span>👍 24</span></div>
+        </div>
+      </div>
+      <div class="comment">
+        <div class="comment-avatar"></div>
+        <div>
+          <span class="comment-name">southpaw_sav</span><span class="fan-record">89-31</span><span class="fan-tier contender">Contender</span><span class="comment-time">4h ago</span>
+          <p class="comment-text">Usyk's footwork is a different level though. He's not gonna be there to get hit like Fury sometimes was. This is a bad stylistic matchup for Deontay.</p>
+          <div class="comment-actions"><span>Reply</span><span>👍 18</span></div>
+        </div>
+      </div>
+      <div class="comment">
+        <div class="comment-avatar"></div>
+        <div>
+          <span class="comment-name">OldSchoolCard</span><span class="fan-record">12-9</span><span class="fan-tier prospect">Prospect</span><span class="comment-time">6h ago</span>
+          <p class="comment-text">Wish this happened five years ago but I'll still take it. Legacy fight either way it goes.</p>
+          <div class="comment-actions"><span>Reply</span><span>👍 11</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="rope-line"></div></div>
+
+<section class="section">
+  <div class="wrap">
+    <h2 class="section-title">More Heavyweight News</h2>
+    <div class="story-grid">
+      <div class="story-card">
+        <div class="story-thumb"></div>
+        <div class="story-body-sm">
+          <span class="story-cat">Matchups</span>
+          <div class="story-title">Allegiant Stadium emerges as front-runner for Usyk-Wilder venue</div>
+          <span class="story-meta">4 min read · Jul 12</span>
+        </div>
+      </div>
+      <div class="story-card">
+        <div class="story-thumb"></div>
+        <div class="story-body-sm">
+          <span class="story-cat">Analysis</span>
+          <div class="story-title">Wilder's power numbers, five years removed from his prime</div>
+          <span class="story-meta">6 min read · Jul 10</span>
+        </div>
+      </div>
+      <div class="story-card">
+        <div class="story-thumb"></div>
+        <div class="story-body-sm">
+          <span class="story-cat">Vault</span>
+          <div class="story-title">Wilder-Fury I: The Knockdown Nobody Believed</div>
+          <span class="story-meta">7 min read · Archive</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="newsletter">
+  <div class="wrap newsletter-inner">
+    <div>
+      <h3>Get the card before fight week does.</h3>
+      <p>One email, every Sunday. News, rankings movement, and one thing from the Vault worth your time.</p>
+    </div>
+    <div class="nl-form">
+      <input type="email" placeholder="you@email.com">
+      <button>Sign Up</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-logo">BOUTREPORT</div>
+      <div class="footer-links">
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="#">Corrections</a>
+      </div>
+    </div>
+    <div class="footer-note">© 2026 BoutReport. Boxing, told right.</div>
+  </div>
+</footer>
+
+<script>
+  // NOTE: This is a UI preview only. Real sign-in requires Supabase Auth
+  // (Google/X OAuth) wired up when the site is actually built.
+  function previewSignIn(){
+    document.getElementById('signInBtn').style.display = 'none';
+    document.getElementById('accountMenu').classList.add('active');
+  }
+  function previewSignOut(){
+    document.getElementById('accountMenu').classList.remove('active', 'open');
+    document.getElementById('signInBtn').style.display = 'inline-block';
+    isSignedIn = false;
+  }
+  function toggleAccountMenu(){
+    document.getElementById('accountMenu').classList.toggle('open');
+  }
+  document.addEventListener('click', (e) => {
+    if(!e.target.closest('.account')){
+      document.getElementById('accountMenu').classList.remove('open');
+    }
+  });
+
+  const menuToggle = document.getElementById('menuToggle');
+  const drawer = document.getElementById('drawer');
+  const drawerBackdrop = document.getElementById('drawerBackdrop');
+  const drawerClose = document.getElementById('drawerClose');
+
+  function openDrawer(){
+    drawer.classList.add('open');
+    drawerBackdrop.classList.add('open');
+  }
+  function closeDrawer(){
+    drawer.classList.remove('open');
+    drawerBackdrop.classList.remove('open');
+  }
+  menuToggle.addEventListener('click', openDrawer);
+  drawerClose.addEventListener('click', closeDrawer);
+  drawerBackdrop.addEventListener('click', closeDrawer);
+
+  document.querySelectorAll('.drawer-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const group = btn.closest('.drawer-group');
+      const wasOpen = group.classList.contains('open');
+      document.querySelectorAll('.drawer-group').forEach(g => g.classList.remove('open'));
+      if(!wasOpen){ group.classList.add('open'); }
+    });
+  });
+
+  // Desktop dropdown: also allow tap/click to toggle (for touch laptops/tablets)
+  document.querySelectorAll('.nav-item .nav-link').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const item = btn.closest('.nav-item');
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('open'));
+      if(!wasOpen){ item.classList.add('open'); }
+    });
+  });
+  document.addEventListener('click', (e) => {
+    if(!e.target.closest('.nav-item')){
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('open'));
+    }
+  });
+
+  // Fan prediction widget (in-memory only, resets on reload)
+  let votes = { left: 1204 * 0.64, right: 1204 * 0.36 };
+  let hasVoted = false;
+  function castVote(side){
+    requireAuth("Sign in to make your pick and start building your prediction record.", () => {
+      if(hasVoted) return;
+      hasVoted = true;
+      votes[side] += 1;
+      const total = votes.left + votes.right;
+      const pctLeft = Math.round((votes.left / total) * 100);
+      const pctRight = 100 - pctLeft;
+      document.getElementById('barLeft').style.width = pctLeft + '%';
+      document.getElementById('barRight').style.width = pctRight + '%';
+      document.getElementById('pctLeft').textContent = pctLeft + '%';
+      document.getElementById('pctRight').textContent = pctRight + '%';
+      document.getElementById('voteCount').textContent = Math.round(total).toLocaleString() + ' fans have voted';
+      document.getElementById(side === 'left' ? 'pickLeft' : 'pickRight').classList.add('picked');
+    });
+  }
+
+  // Reactions (in-memory only)
+  function toggleReaction(btn){
+    requireAuth("Sign in to react to this story.", () => {
+      const countSpan = btn.querySelector('.reaction-count');
+      let count = parseInt(countSpan.textContent, 10);
+      if(btn.classList.contains('active')){
+        btn.classList.remove('active');
+        countSpan.textContent = count - 1;
+      } else {
+        btn.classList.add('active');
+        countSpan.textContent = count + 1;
+      }
+    });
+  }
+
+  // Copy link
+  function copyLink(btn){
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      const original = btn.innerHTML;
+      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
+      setTimeout(() => { btn.innerHTML = original; }, 1500);
+    });
+  }
+</script>
+
+<div class="modal-backdrop" id="authModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <button class="modal-close" onclick="closeAuthModal()" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <span class="modal-eyebrow">Sign In Required</span>
+      <h3 id="authModalTitle">Get In The Ring</h3>
+    </div>
+    <div class="modal-body">
+      <p id="authModalCopy">Sign in to make your pick and start building your prediction record.</p>
+      <button class="oauth-btn" onclick="signInAndClose()">
+        <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.25 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.85A11 11 0 0012 23z"/><path fill="#FBBC05" d="M5.84 14.1a6.6 6.6 0 010-4.2V7.05H2.18a11 11 0 000 9.9l3.66-2.85z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1a11 11 0 00-9.82 6.05l3.66 2.85C6.71 7.31 9.14 5.38 12 5.38z"/></svg>
+        Continue with Google
+      </button>
+      <button class="oauth-btn x-btn" onclick="signInAndClose()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23 22h-6.9l-5.4-6.9L4.4 22H1.3l8.1-9.3L1 2h7.1l4.9 6.3L18.9 2zm-1.2 18h1.9L7.4 4h-2l12.3 16z"/></svg>
+        Continue with X
+      </button>
+      <div class="modal-note">By continuing you agree to BoutReport's Terms &amp; Community Guidelines.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // NOTE: Preview-only gating. Real version checks an actual Supabase
+  // session instead of this in-memory flag.
+  let isSignedIn = false;
+  let pendingAction = null;
+
+  function requireAuth(reason, action){
+    if(isSignedIn){
+      action();
+      return;
+    }
+    document.getElementById('authModalCopy').textContent = reason;
+    document.getElementById('authModal').classList.add('open');
+  }
+  function closeAuthModal(){
+    document.getElementById('authModal').classList.remove('open');
+  }
+  function signInAndClose(){
+    isSignedIn = true;
+    previewSignIn();
+    closeAuthModal();
+  }
+
+  function gateCommentFocus(textarea){
+    if(!isSignedIn){
+      textarea.blur();
+      requireAuth("Sign in to join the conversation.", () => {});
+    }
+  }
+  function postComment(){
+    requireAuth("Sign in to post a comment.", () => {
+      const input = document.getElementById('commentInput');
+      if(input.value.trim() === '') return;
+      alert('In the real site, this posts your comment tied to your account.');
+      input.value = '';
+    });
+  }
+</script>
+</body>
+</html>
