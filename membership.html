@@ -297,10 +297,11 @@
     margin-bottom:24px; text-align:center;
   }
   .perks-grid{
-    display:grid; grid-template-columns:repeat(3, 1fr); gap:20px;
-    max-width:900px; margin:0 auto;
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:20px;
+    max-width:1100px; margin:0 auto;
   }
-  @media (max-width:760px){ .perks-grid{ grid-template-columns:1fr; } }
+  @media (max-width:900px){ .perks-grid{ grid-template-columns:repeat(2, 1fr); } }
+  @media (max-width:520px){ .perks-grid{ grid-template-columns:1fr; } }
   .perk-card{
     border:1px solid var(--card-border);
     background-color:#F0EADD !important;
@@ -439,6 +440,61 @@
   }
   .paywall-lock p{ font-size:13px; color:var(--steel); margin-bottom:16px; }
   .paywall-lock .join-btn{ max-width:220px; margin:0 auto; }
+
+  /* ---------- Gym nickname demo ---------- */
+  .gym-demo{
+    max-width:520px; margin:0 auto;
+    background-color:#15110D !important;
+    border-radius:4px;
+    overflow:hidden;
+    box-shadow:0 20px 50px rgba(0,0,0,0.3);
+  }
+  .gym-demo-head{
+    padding:22px 24px 18px;
+    text-align:center;
+    border-bottom:1px solid rgba(242,238,227,0.12);
+  }
+  .gym-demo-head .eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--gold) !important; font-weight:700; margin-bottom:8px; display:block;
+  }
+  .gym-demo-head h3{
+    font-family:'Anton', sans-serif; font-size:22px; color:#F2EEE3 !important;
+  }
+  .gym-demo-body{ padding:28px 24px; text-align:center; }
+  .gym-demo-name{
+    font-family:'JetBrains Mono', monospace; font-size:13px;
+    color:rgba(242,238,227,0.5) !important; margin-bottom:6px;
+  }
+  .gym-demo-nickname{
+    font-family:'Anton', sans-serif;
+    font-size:clamp(24px, 5vw, 34px);
+    color:var(--gold) !important;
+    margin-bottom:20px;
+    min-height:44px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .gym-demo-rolls{
+    font-family:'JetBrains Mono', monospace; font-size:12px;
+    color:rgba(242,238,227,0.55) !important; margin-bottom:18px;
+  }
+  .gym-demo-btn{
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:14px;
+    text-transform:uppercase; letter-spacing:0.04em;
+    padding:13px 28px;
+    background-color:var(--oxblood) !important;
+    color:#F2EEE3 !important;
+    border:1px solid var(--oxblood);
+    border-radius:3px;
+    cursor:pointer;
+  }
+  .gym-demo-btn:hover:not(:disabled){ background-color:var(--oxblood-bright) !important; }
+  .gym-demo-btn:disabled{ opacity:0.4; cursor:not-allowed; }
+  .gym-demo-note{
+    font-family:'JetBrains Mono', monospace; font-size:11px;
+    color:rgba(242,238,227,0.4) !important; margin-top:14px;
+  }
+
 
   footer{ padding:36px 0 46px; }
   .footer-inner{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
@@ -624,6 +680,13 @@
         <h3>Early Vault Access</h3>
         <p>New historical deep-dives 48 hours before they go public.</p>
       </div>
+      <div class="perk-card">
+        <div class="perk-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.5 5 5.5.8-4 3.9.9 5.5-5-2.6-5 2.6.9-5.5-4-3.9 5.5-.8z"/></svg>
+        </div>
+        <h3>A Nickname From Coach</h3>
+        <p>Every fighter gets one at the gym. 3 rolls, then it's yours for good.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -643,6 +706,7 @@
           <li><span class="price-check">✓</span> Zero ads, site-wide</li>
           <li><span class="price-check">✓</span> Gold member badge on your profile</li>
           <li><span class="price-check">✓</span> Early access to Vault deep-dives</li>
+          <li><span class="price-check">✓</span> Your own gym nickname, straight from Coach</li>
           <li><span class="price-check">✓</span> Directly funds independent boxing coverage</li>
         </ul>
         <button class="join-btn">Become a Member</button>
@@ -662,7 +726,29 @@
       <div>
         <span style="font-family:'Oswald', sans-serif; font-weight:600; font-size:14px;">RingCityRob</span>
         <span class="member-badge">★ Member</span>
+        <div style="font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--gold); margin-top:3px; font-weight:700;">"The Cold-Blooded Closer"</div>
         <div style="font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--steel-light); margin-top:2px;">142-38 · Champion</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="rope-line"></div></div>
+
+<section class="section">
+  <div class="wrap">
+    <h2 class="section-title">Welcome to the BoutReport Gym</h2>
+    <div class="gym-demo">
+      <div class="gym-demo-head">
+        <span class="eyebrow">Members Only</span>
+        <h3>Here's Your Nickname, Straight From Coach</h3>
+      </div>
+      <div class="gym-demo-body">
+        <div class="gym-demo-name">You</div>
+        <div class="gym-demo-nickname" id="nicknameDisplay">Step up to the bag...</div>
+        <div class="gym-demo-rolls" id="rollsRemaining">3 rolls remaining</div>
+        <button class="gym-demo-btn" id="rollBtn" onclick="rollNickname()">Roll For A Nickname</button>
+        <div class="gym-demo-note">Once you're out of rolls, it's yours for good — just like the real gym.</div>
       </div>
     </div>
   </div>
@@ -722,6 +808,29 @@
       document.getElementById('accountMenu').classList.remove('open');
     }
   });
+
+  // Gym nickname roll demo (front-end only — real version enforces
+  // uniqueness across all members via the database, not just randomness)
+  const nicknameAdjectives = ["Ferocious","Iron","Sneaky","Relentless","Silent","Reckless","Patient","Sudden","Slick","Heavy","Lightning","Stubborn","Cold-Blooded","Wild","Calculated","Ruthless","Lucky","Sharp","Quiet","Explosive","Gritty","Unbothered","Sly","Tireless","Dangerous"];
+  const nicknameNouns = ["Hammer","Ghost","Landlord","Accountant","Weatherman","Storm","Anchor","Blueprint","Metronome","Wolf","Wrecking Ball","Postman","Surgeon","Freight Train","Closer","Mechanic","Undertaker","Poet","Architect","Bulldozer","Locksmith","Professor","Janitor","Contractor","Referee"];
+
+  let rollsLeft = 3;
+  function rollNickname(){
+    if(rollsLeft <= 0) return;
+    const adj = nicknameAdjectives[Math.floor(Math.random() * nicknameAdjectives.length)];
+    const noun = nicknameNouns[Math.floor(Math.random() * nicknameNouns.length)];
+    document.getElementById('nicknameDisplay').textContent = `"The ${adj} ${noun}"`;
+    rollsLeft--;
+    const rollsEl = document.getElementById('rollsRemaining');
+    const btnEl = document.getElementById('rollBtn');
+    if(rollsLeft > 0){
+      rollsEl.textContent = `${rollsLeft} roll${rollsLeft === 1 ? '' : 's'} remaining`;
+    } else {
+      rollsEl.textContent = "That's the one. Yours for good.";
+      btnEl.disabled = true;
+      btnEl.textContent = "Locked In";
+    }
+  }
 
   const menuToggle = document.getElementById('menuToggle');
   const drawer = document.getElementById('drawer');
