@@ -252,6 +252,13 @@
     color:var(--steel);
     padding:10px 20px 10px 34px;
   }
+  .drawer-plain.gold{
+    color:var(--gold);
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
   .drawer-plain{
     display:block;
     padding:16px 20px;
@@ -457,6 +464,7 @@
 
   @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
 
@@ -523,7 +531,7 @@
       </button>
 
       <a href="membership.html" class="member-nav-link">★ Membership</a>
-      <button class="signin-btn" id="signInBtn" onclick="previewSignIn()">Sign In</button>
+      <button class="signin-btn" id="signInBtn" onclick="signInWithGoogle()">Sign In</button>
 
       <div class="account" id="accountMenu">
         <button class="account-trigger" onclick="toggleAccountMenu()">
@@ -539,7 +547,7 @@
           <a href="#">My Profile</a>
           <a href="leaderboard.html">Leaderboard</a>
           <a href="#">My Predictions</a>
-          <button onclick="previewSignOut()">Sign Out</button>
+          <button onclick="handleSignOut()">Sign Out</button>
         </div>
       </div>
 
@@ -586,6 +594,7 @@
   </div>
   <a href="#" class="drawer-plain">Prospects</a>
   <a href="crossover.html" class="drawer-plain">Crossover</a>
+  <a href="membership.html" class="drawer-plain gold">★ Membership</a>
   <div class="drawer-group">
     <button class="drawer-toggle">Gear <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
     <div class="drawer-sub">
@@ -741,16 +750,71 @@
 </footer>
 
 <script>
-  // NOTE: This is a UI preview only. Real sign-in requires Supabase Auth
-  // (Google/X OAuth) wired up when the site is actually built.
-  function previewSignIn(){
-    document.getElementById('signInBtn').style.display = 'none';
-    document.getElementById('accountMenu').classList.add('active');
+  // ============================================================
+  // SUPABASE SETUP — replace these two values with your real ones,
+  // found in Supabase: Settings → API → Project URL / anon public key.
+  // The anon key is safe to expose in client-side code — it's designed
+  // for this, and Row Level Security is what actually protects your data.
+  // ============================================================
+  const SUPABASE_URL = "https://qrdgfhkwetxozjpsblxq.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_wCO95GKuLLxvb81mbtosmw_08mdqh0q";
+
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  async function signInWithGoogle(){
+    await sb.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: window.location.href.split('?')[0] }
+    });
   }
-  function previewSignOut(){
-    document.getElementById('accountMenu').classList.remove('active', 'open');
-    document.getElementById('signInBtn').style.display = 'inline-block';
+
+  async function handleSignOut(){
+    await sb.auth.signOut();
   }
+
+  async function updateAuthUI(session){
+    const signInBtn = document.getElementById('signInBtn');
+    const accountMenu = document.getElementById('accountMenu');
+
+    if(!session){
+      signInBtn.style.display = 'inline-block';
+      accountMenu.classList.remove('active', 'open');
+      return;
+    }
+
+    // Signed in — pull the real profile row and populate the nav
+    const { data: profile, error } = await sb
+      .from('profiles')
+      .select('username, correct_predictions, incorrect_predictions, tier, nickname')
+      .eq('id', session.user.id)
+      .single();
+
+    if(error || !profile){
+      console.error('Could not load profile:', error);
+      return;
+    }
+
+    const record = `${profile.correct_predictions}-${profile.incorrect_predictions}`;
+    const total = profile.correct_predictions + profile.incorrect_predictions;
+    const accuracy = total > 0 ? Math.round((profile.correct_predictions / total) * 100) : 0;
+    const tierLabel = profile.tier
+      .split('_')
+      .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ');
+
+    signInBtn.style.display = 'none';
+    accountMenu.classList.add('active');
+    document.querySelector('.account-record').textContent = record;
+    document.querySelector('.account-menu-name').textContent = profile.username;
+    document.querySelector('.account-menu-sub').textContent =
+      `${tierLabel} · ${record} (${accuracy}%)`;
+  }
+
+  // Fires on load AND whenever sign-in/sign-out happens
+  sb.auth.onAuthStateChange((_event, session) => {
+    updateAuthUI(session);
+  });
+
   function toggleAccountMenu(){
     document.getElementById('accountMenu').classList.toggle('open');
   }
