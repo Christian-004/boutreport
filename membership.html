@@ -253,6 +253,13 @@
     color:var(--steel);
     padding:10px 20px 10px 34px;
   }
+  .drawer-plain.gold{
+    color:var(--gold);
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
   .drawer-plain{
     display:block;
     padding:16px 20px;
@@ -637,6 +644,7 @@
   </div>
   <a href="#" class="drawer-plain">Prospects</a>
   <a href="crossover.html" class="drawer-plain">Crossover</a>
+  <a href="membership.html" class="drawer-plain gold">★ Membership</a>
   <div class="drawer-group">
     <button class="drawer-toggle">Gear <svg class="caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l4 4 4-4"/></svg></button>
     <div class="drawer-sub">
@@ -746,9 +754,15 @@
       <div class="gym-demo-body">
         <div class="gym-demo-name">You</div>
         <div class="gym-demo-nickname" id="nicknameDisplay">Step up to the bag...</div>
-        <div class="gym-demo-rolls" id="rollsRemaining">3 rolls remaining</div>
-        <button class="gym-demo-btn" id="rollBtn" onclick="rollNickname()">Roll For A Nickname</button>
-        <div class="gym-demo-note">Once you're out of rolls, it's yours for good — just like the real gym.</div>
+        <div class="gym-demo-rolls" id="rollsRemaining">3 rolls available</div>
+        <div id="rollBtnWrap">
+          <button class="gym-demo-btn" id="rollBtn" onclick="rollNickname()">Roll For A Nickname</button>
+        </div>
+        <div id="choiceBtnWrap" style="display:none; gap:12px; justify-content:center; flex-wrap:wrap;">
+          <button class="gym-demo-btn" id="keepBtn" onclick="lockNickname()">Keep This One</button>
+          <button class="gym-demo-btn" id="rerollBtn" onclick="rollNickname()" style="background-color:transparent !important; border:1.5px solid var(--gold); color:var(--gold) !important;">Roll Again</button>
+        </div>
+        <div class="gym-demo-note" id="gymNote">Like it? Keep it. Not feeling it? Roll again — up to 3 tries total.</div>
       </div>
     </div>
   </div>
@@ -815,21 +829,49 @@
   const nicknameNouns = ["Hammer","Ghost","Landlord","Accountant","Weatherman","Storm","Anchor","Blueprint","Metronome","Wolf","Wrecking Ball","Postman","Surgeon","Freight Train","Closer","Mechanic","Undertaker","Poet","Architect","Bulldozer","Locksmith","Professor","Janitor","Contractor","Referee"];
 
   let rollsLeft = 3;
+  let isLocked = false;
+
   function rollNickname(){
-    if(rollsLeft <= 0) return;
+    if(isLocked || rollsLeft <= 0) return;
+
     const adj = nicknameAdjectives[Math.floor(Math.random() * nicknameAdjectives.length)];
     const noun = nicknameNouns[Math.floor(Math.random() * nicknameNouns.length)];
     document.getElementById('nicknameDisplay').textContent = `"The ${adj} ${noun}"`;
     rollsLeft--;
+
     const rollsEl = document.getElementById('rollsRemaining');
-    const btnEl = document.getElementById('rollBtn');
+    const rollBtnWrap = document.getElementById('rollBtnWrap');
+    const choiceBtnWrap = document.getElementById('choiceBtnWrap');
+    const rerollBtn = document.getElementById('rerollBtn');
+    const noteEl = document.getElementById('gymNote');
+
+    rollBtnWrap.style.display = 'none';
+
     if(rollsLeft > 0){
-      rollsEl.textContent = `${rollsLeft} roll${rollsLeft === 1 ? '' : 's'} remaining`;
+      // Rolls still available — let them choose to keep this one or roll again
+      rollsEl.textContent = `${rollsLeft} roll${rollsLeft === 1 ? '' : 's'} left if you want ${rollsLeft === 1 ? 'it' : 'them'}`;
+      choiceBtnWrap.style.display = 'flex';
+      rerollBtn.style.display = 'inline-block';
+      noteEl.textContent = "Like it? Keep it. Not feeling it? Roll again.";
     } else {
-      rollsEl.textContent = "That's the one. Yours for good.";
-      btnEl.disabled = true;
-      btnEl.textContent = "Locked In";
+      // Out of rolls — this one's locked in automatically
+      lockNickname();
     }
+  }
+
+  function lockNickname(){
+    isLocked = true;
+    const rollsEl = document.getElementById('rollsRemaining');
+    const choiceBtnWrap = document.getElementById('choiceBtnWrap');
+    const keepBtn = document.getElementById('keepBtn');
+    const rerollBtn = document.getElementById('rerollBtn');
+    const noteEl = document.getElementById('gymNote');
+
+    rerollBtn.style.display = 'none';
+    keepBtn.disabled = true;
+    keepBtn.textContent = "Locked In";
+    rollsEl.textContent = "That's the one. Yours for good.";
+    noteEl.textContent = "Once you're out of rolls — or you keep one — it's locked in for good.";
   }
 
   const menuToggle = document.getElementById('menuToggle');
