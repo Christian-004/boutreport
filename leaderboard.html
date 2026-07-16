@@ -619,14 +619,14 @@
       <div class="my-record-left">
         <div class="my-avatar"></div>
         <div>
-          <div class="my-record-name">You</div>
-          <div class="my-record-sub">Sign in to start your record</div>
+          <div class="my-record-name" id="myRecordName">You</div>
+          <div class="my-record-sub" id="myRecordSub">Sign in to start your record</div>
         </div>
       </div>
       <div class="my-record-stats">
-        <div class="my-record-stat"><div class="val">—</div><div class="lbl">Record</div></div>
-        <div class="my-record-stat"><div class="val">—</div><div class="lbl">Accuracy</div></div>
-        <div class="my-record-stat"><div class="val">—</div><div class="lbl">Rank</div></div>
+        <div class="my-record-stat"><div class="val" id="myRecordVal">—</div><div class="lbl">Record</div></div>
+        <div class="my-record-stat"><div class="val" id="myAccuracyVal">—</div><div class="lbl">Accuracy</div></div>
+        <div class="my-record-stat"><div class="val" id="myRankVal">—</div><div class="lbl">Rank</div></div>
       </div>
     </div>
   </div>
@@ -638,73 +638,14 @@
   <div class="wrap">
     <h2 class="section-title">Top Predictors</h2>
     <div class="tier-legend">
-      <div class="tier-chip"><span class="tier-dot champion"></span>Champion — 100+ correct, 65%+ accuracy</div>
-      <div class="tier-chip"><span class="tier-dot contender"></span>Contender — 25+ correct</div>
-      <div class="tier-chip"><span class="tier-dot prospect"></span>Prospect — Just getting started</div>
+      <div class="tier-chip"><span class="tier-dot champion"></span>Amateur → Legend — 10 tiers, from your first pick to 400+ correct at 70%+ accuracy</div>
     </div>
     <div class="board">
       <div class="board-row head">
         <span>#</span><span>Fan</span><span>Record</span><span>Accuracy</span><span>Streak</span>
       </div>
-      <div class="board-row">
-        <span class="board-rank top3">1</span>
-        <div class="board-user">
-          <div class="board-avatar"></div>
-          <span class="board-name">CutmanCarlos <span class="board-tier champion">Champion</span></span>
-        </div>
-        <span class="board-record">210-64</span>
-        <span class="board-pct">77%</span>
-        <span class="board-streak hot">W12</span>
-      </div>
-      <div class="board-row">
-        <span class="board-rank top3">2</span>
-        <div class="board-user">
-          <div class="board-avatar"></div>
-          <span class="board-name">RingCityRob <span class="board-tier champion">Champion</span></span>
-        </div>
-        <span class="board-record">142-38</span>
-        <span class="board-pct">79%</span>
-        <span class="board-streak hot">W6</span>
-      </div>
-      <div class="board-row">
-        <span class="board-rank top3">3</span>
-        <div class="board-user">
-          <div class="board-avatar"></div>
-          <span class="board-name">HeavyHandsHan <span class="board-tier champion">Champion</span></span>
-        </div>
-        <span class="board-record">188-71</span>
-        <span class="board-pct">73%</span>
-        <span class="board-streak">W2</span>
-      </div>
-      <div class="board-row">
-        <span class="board-rank">4</span>
-        <div class="board-user">
-          <div class="board-avatar"></div>
-          <span class="board-name">southpaw_sav <span class="board-tier contender">Contender</span></span>
-        </div>
-        <span class="board-record">89-31</span>
-        <span class="board-pct">74%</span>
-        <span class="board-streak hot">W4</span>
-      </div>
-      <div class="board-row">
-        <span class="board-rank">5</span>
-        <div class="board-user">
-          <div class="board-avatar"></div>
-          <span class="board-name">JabAndGo <span class="board-tier contender">Contender</span></span>
-        </div>
-        <span class="board-record">64-29</span>
-        <span class="board-pct">69%</span>
-        <span class="board-streak">L1</span>
-      </div>
-      <div class="board-row you">
-        <span class="board-rank">142</span>
-        <div class="board-user">
-          <div class="board-avatar"></div>
-          <span class="board-name">You <span class="board-tier">—</span></span>
-        </div>
-        <span class="board-record">0-0</span>
-        <span class="board-pct">—</span>
-        <span class="board-streak">—</span>
+      <div id="boardBody">
+        <div class="board-row"><span></span><span>Loading real predictors...</span><span></span><span></span><span></span></div>
       </div>
     </div>
   </div>
@@ -761,6 +702,9 @@
 
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+  let currentSession = null;
+  let currentProfile = null;
+
   async function signInWithGoogle(){
     await sb.auth.signInWithOAuth({
       provider: 'google',
@@ -772,20 +716,26 @@
     await sb.auth.signOut();
   }
 
+  function formatTier(tier){
+    return tier.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  }
+
   async function updateAuthUI(session){
+    currentSession = session;
     const signInBtn = document.getElementById('signInBtn');
     const accountMenu = document.getElementById('accountMenu');
 
     if(!session){
       signInBtn.style.display = 'inline-block';
       accountMenu.classList.remove('active', 'open');
+      currentProfile = null;
       return;
     }
 
     // Signed in — pull the real profile row and populate the nav
     const { data: profile, error } = await sb
       .from('profiles')
-      .select('username, correct_predictions, incorrect_predictions, tier, nickname')
+      .select('username, correct_predictions, incorrect_predictions, tier, nickname, is_member')
       .eq('id', session.user.id)
       .single();
 
@@ -794,13 +744,12 @@
       return;
     }
 
+    currentProfile = profile;
+
     const record = `${profile.correct_predictions}-${profile.incorrect_predictions}`;
     const total = profile.correct_predictions + profile.incorrect_predictions;
     const accuracy = total > 0 ? Math.round((profile.correct_predictions / total) * 100) : 0;
-    const tierLabel = profile.tier
-      .split('_')
-      .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(' ');
+    const tierLabel = formatTier(profile.tier);
 
     signInBtn.style.display = 'none';
     accountMenu.classList.add('active');
@@ -810,9 +759,71 @@
       `${tierLabel} · ${record} (${accuracy}%)`;
   }
 
+  // Renders the real Top Predictors board and the "My Record" card
+  async function loadLeaderboard(){
+    const { data: top, error } = await sb
+      .from('profiles')
+      .select('username, correct_predictions, incorrect_predictions, tier, nickname, is_member')
+      .order('correct_predictions', { ascending: false })
+      .limit(20);
+
+    const boardBody = document.getElementById('boardBody');
+
+    if(error){
+      console.error('Could not load leaderboard:', error);
+      boardBody.innerHTML = '<div class="board-row"><span></span><span>Could not load the leaderboard right now.</span><span></span><span></span><span></span></div>';
+      return;
+    }
+
+    if(!top || top.length === 0){
+      boardBody.innerHTML = '<div class="board-row"><span></span><span>No predictions yet — be the first.</span><span></span><span></span><span></span></div>';
+    } else {
+      boardBody.innerHTML = top.map((p, i) => {
+        const record = `${p.correct_predictions}-${p.incorrect_predictions}`;
+        const total = p.correct_predictions + p.incorrect_predictions;
+        const accuracy = total > 0 ? Math.round((p.correct_predictions / total) * 100) : 0;
+        const isMe = currentSession && p.username === currentProfile?.username;
+        const nameDisplay = p.is_member && p.nickname ? `${p.username} "${p.nickname}"` : p.username;
+        return `
+          <div class="board-row${isMe ? ' you' : ''}">
+            <span class="board-rank${i < 3 ? ' top3' : ''}">${i + 1}</span>
+            <div class="board-user">
+              <div class="board-avatar"></div>
+              <span class="board-name">${nameDisplay} <span class="board-tier contender">${formatTier(p.tier)}</span></span>
+            </div>
+            <span class="board-record">${record}</span>
+            <span class="board-pct">${accuracy}%</span>
+            <span class="board-streak">—</span>
+          </div>`;
+      }).join('');
+    }
+
+    // My Record card
+    if(currentSession && currentProfile){
+      const record = `${currentProfile.correct_predictions}-${currentProfile.incorrect_predictions}`;
+      const total = currentProfile.correct_predictions + currentProfile.incorrect_predictions;
+      const accuracy = total > 0 ? Math.round((currentProfile.correct_predictions / total) * 100) : 0;
+
+      // Rank = how many people have a strictly better correct_predictions count, + 1
+      const { count, error: rankError } = await sb
+        .from('profiles')
+        .select('id', { count: 'exact', head: true })
+        .gt('correct_predictions', currentProfile.correct_predictions);
+
+      const rank = rankError ? '—' : `#${(count || 0) + 1}`;
+
+      document.getElementById('myRecordName').textContent = currentProfile.username;
+      document.getElementById('myRecordSub').textContent = formatTier(currentProfile.tier);
+      document.getElementById('myRecordVal').textContent = record;
+      document.getElementById('myAccuracyVal').textContent = total > 0 ? `${accuracy}%` : '—';
+      document.getElementById('myRankVal').textContent = rank;
+    }
+  }
+
   // Fires on load AND whenever sign-in/sign-out happens
-  sb.auth.onAuthStateChange((_event, session) => {
-    updateAuthUI(session);
+  sb.auth.onAuthStateChange(async (_event, session) => {
+    await updateAuthUI(session);
+    loadLeaderboard();
   });
 
   function toggleAccountMenu(){
