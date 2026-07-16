@@ -1117,36 +1117,11 @@
     <div class="comments-section">
       <div class="comments-head">
         <h2 class="section-title" style="margin-bottom:0;">Comments</h2>
-        <span class="comments-count">47 comments</span>
+        <span class="comments-count">0 comments</span>
       </div>
       <div class="comment-form">
         <textarea id="commentInput" placeholder="What's your take on this fight?" onfocus="gateCommentFocus(this)"></textarea>
         <button onclick="postComment()">Post</button>
-      </div>
-      <div class="comment">
-        <div class="comment-avatar"></div>
-        <div>
-          <span class="comment-name">RingCityRob</span><span class="fan-record">142-38</span><span class="fan-tier champion">Champion</span><span class="member-badge">★ Member</span><span class="comment-time">2h ago</span>
-          <div style="font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--gold); font-weight:700; margin:2px 0 6px;">"The Cold-Blooded Closer"</div>
-          <p class="comment-text">Wilder's power is still the great equalizer no matter what anyone says. One shot and it's over regardless of who's landing more.</p>
-          <div class="comment-actions"><span>Reply</span><span>👍 24</span></div>
-        </div>
-      </div>
-      <div class="comment">
-        <div class="comment-avatar"></div>
-        <div>
-          <span class="comment-name">southpaw_sav</span><span class="fan-record">89-31</span><span class="fan-tier contender">Contender</span><span class="comment-time">4h ago</span>
-          <p class="comment-text">Usyk's footwork is a different level though. He's not gonna be there to get hit like Fury sometimes was. This is a bad stylistic matchup for Deontay.</p>
-          <div class="comment-actions"><span>Reply</span><span>👍 18</span></div>
-        </div>
-      </div>
-      <div class="comment">
-        <div class="comment-avatar"></div>
-        <div>
-          <span class="comment-name">OldSchoolCard</span><span class="fan-record">12-9</span><span class="fan-tier prospect">Prospect</span><span class="comment-time">6h ago</span>
-          <p class="comment-text">Wish this happened five years ago but I'll still take it. Legacy fight either way it goes.</p>
-          <div class="comment-actions"><span>Reply</span><span>👍 11</span></div>
-        </div>
       </div>
     </div>
   </div>
@@ -1225,6 +1200,11 @@
 
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+  // Shared across the whole page — this is what requireAuth() checks now,
+  // instead of the old fake isSignedIn flag.
+  let currentSession = null;
+  let currentProfile = null;
+
   async function signInWithGoogle(){
     await sb.auth.signInWithOAuth({
       provider: 'google',
@@ -1237,6 +1217,7 @@
   }
 
   async function updateAuthUI(session){
+    currentSession = session;
     const signInBtn = document.getElementById('signInBtn');
     const accountMenu = document.getElementById('accountMenu');
 
@@ -1258,6 +1239,8 @@
       return;
     }
 
+    currentProfile = profile;
+
     const record = `${profile.correct_predictions}-${profile.incorrect_predictions}`;
     const total = profile.correct_predictions + profile.incorrect_predictions;
     const accuracy = total > 0 ? Math.round((profile.correct_predictions / total) * 100) : 0;
@@ -1277,6 +1260,7 @@
   // Fires on load AND whenever sign-in/sign-out happens
   sb.auth.onAuthStateChange((_event, session) => {
     updateAuthUI(session);
+    if(typeof loadPredictionSplit === 'function') loadPredictionSplit();
   });
 
   function toggleAccountMenu(){
@@ -1329,27 +1313,78 @@
     }
   });
 
-  // Fan prediction widget (in-memory only, resets on reload)
-  let votes = { left: 1204 * 0.64, right: 1204 * 0.36 };
+  // Fan prediction widget — backed by the real predictions table now
+  const FIGHT_ID = "a1a1a1a1-1111-1111-1111-111111111111"; // Usyk vs Wilder, seeded via SQL
   let hasVoted = false;
+
+  async function loadPredictionSplit(){
+    const { data: picks, error } = await sb
+      .from('predictions')
+      .select('pick, user_id')
+      .eq('fight_id', FIGHT_ID);
+
+    if(error){
+      console.error('Could not load predictions:', error);
+      return;
+    }
+
+    const leftCount = picks.filter(p => p.pick === 'fighter_a').length;
+    const rightCount = picks.filter(p => p.pick === 'fighter_b').length;
+    const total = leftCount + rightCount;
+
+    const pctLeft = total > 0 ? Math.round((leftCount / total) * 100) : 50;
+    const pctRight = 100 - pctLeft;
+
+    document.getElementById('barLeft').style.width = pctLeft + '%';
+    document.getElementById('barRight').style.width = pctRight + '%';
+    document.getElementById('pctLeft').textContent = pctLeft + '%';
+    document.getElementById('pctRight').textContent = pctRight + '%';
+    document.getElementById('voteCount').textContent =
+      total > 0 ? `${total.toLocaleString()} fan${total === 1 ? '' : 's'} have voted` : 'Be the first to vote';
+
+    // If this person already voted, show it and lock the buttons
+    if(currentSession){
+      const mine = picks.find(p => p.user_id === currentSession.user.id);
+      if(mine){
+        hasVoted = true;
+        document.getElementById(mine.pick === 'fighter_a' ? 'pickLeft' : 'pickRight').classList.add('picked');
+      }
+    }
+  }
+
   function castVote(side){
-    requireAuth("Sign in to make your pick and start building your prediction record.", () => {
+    requireAuth("Sign in to make your pick and start building your prediction record.", async () => {
       if(hasVoted) return;
+
+      const pick = side === 'left' ? 'fighter_a' : 'fighter_b';
+      const { error } = await sb.from('predictions').insert({
+        user_id: currentSession.user.id,
+        fight_id: FIGHT_ID,
+        pick: pick
+      });
+
+      if(error){
+        // Most likely cause: they already voted (unique constraint on user_id + fight_id)
+        console.error('Could not save prediction:', error);
+        if(error.code === '23505'){
+          alert("Looks like you've already picked this fight.");
+        } else {
+          alert("Something went wrong saving your pick — try again in a moment.");
+        }
+        return;
+      }
+
       hasVoted = true;
-      votes[side] += 1;
-      const total = votes.left + votes.right;
-      const pctLeft = Math.round((votes.left / total) * 100);
-      const pctRight = 100 - pctLeft;
-      document.getElementById('barLeft').style.width = pctLeft + '%';
-      document.getElementById('barRight').style.width = pctRight + '%';
-      document.getElementById('pctLeft').textContent = pctLeft + '%';
-      document.getElementById('pctRight').textContent = pctRight + '%';
-      document.getElementById('voteCount').textContent = Math.round(total).toLocaleString() + ' fans have voted';
       document.getElementById(side === 'left' ? 'pickLeft' : 'pickRight').classList.add('picked');
+      loadPredictionSplit(); // refresh with the real, updated split
     });
   }
 
-  // Reactions (in-memory only)
+  document.addEventListener('DOMContentLoaded', loadPredictionSplit);
+
+  // Reactions — still in-memory for now; no reactions table exists yet in the
+  // schema, so this is a known gap, not an oversight. Low priority to wire up
+  // since reactions are lower-stakes than predictions/comments.
   function toggleReaction(btn){
     requireAuth("Sign in to react to this story.", () => {
       const countSpan = btn.querySelector('.reaction-count');
@@ -1385,13 +1420,9 @@
     </div>
     <div class="modal-body">
       <p id="authModalCopy">Sign in to make your pick and start building your prediction record.</p>
-      <button class="oauth-btn" onclick="signInAndClose()">
+      <button class="oauth-btn" onclick="signInWithGoogle()">
         <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.25 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.85A11 11 0 0012 23z"/><path fill="#FBBC05" d="M5.84 14.1a6.6 6.6 0 010-4.2V7.05H2.18a11 11 0 000 9.9l3.66-2.85z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1a11 11 0 00-9.82 6.05l3.66 2.85C6.71 7.31 9.14 5.38 12 5.38z"/></svg>
         Continue with Google
-      </button>
-      <button class="oauth-btn x-btn" onclick="signInAndClose()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23 22h-6.9l-5.4-6.9L4.4 22H1.3l8.1-9.3L1 2h7.1l4.9 6.3L18.9 2zm-1.2 18h1.9L7.4 4h-2l12.3 16z"/></svg>
-        Continue with X
       </button>
       <div class="modal-note">By continuing you agree to BoutReport's Terms &amp; Community Guidelines.</div>
     </div>
@@ -1399,13 +1430,10 @@
 </div>
 
 <script>
-  // NOTE: Preview-only gating. Real version checks an actual Supabase
-  // session instead of this in-memory flag.
-  let isSignedIn = false;
-  let pendingAction = null;
+  const ARTICLE_SLUG = "usyk-wilder";
 
   function requireAuth(reason, action){
-    if(isSignedIn){
+    if(currentSession){
       action();
       return;
     }
@@ -1415,26 +1443,87 @@
   function closeAuthModal(){
     document.getElementById('authModal').classList.remove('open');
   }
-  function signInAndClose(){
-    isSignedIn = true;
-    previewSignIn();
-    closeAuthModal();
-  }
 
   function gateCommentFocus(textarea){
-    if(!isSignedIn){
+    if(!currentSession){
       textarea.blur();
       requireAuth("Sign in to join the conversation.", () => {});
     }
   }
-  function postComment(){
-    requireAuth("Sign in to post a comment.", () => {
+
+  async function postComment(){
+    requireAuth("Sign in to post a comment.", async () => {
       const input = document.getElementById('commentInput');
-      if(input.value.trim() === '') return;
-      alert('In the real site, this posts your comment tied to your account.');
+      const body = input.value.trim();
+      if(body === '') return;
+
+      const { error } = await sb.from('comments').insert({
+        user_id: currentSession.user.id,
+        article_slug: ARTICLE_SLUG,
+        body: body
+      });
+
+      if(error){
+        console.error('Could not post comment:', error);
+        alert('Something went wrong posting that — try again in a moment.');
+        return;
+      }
+
       input.value = '';
+      loadComments(); // refresh the thread to show the new comment
     });
   }
+
+  // Pulls real comments from the database and renders them, replacing
+  // the hardcoded example comments this page shipped with.
+  async function loadComments(){
+    const { data: comments, error } = await sb
+      .from('comments')
+      .select('id, body, created_at, user_id, profiles(username, correct_predictions, incorrect_predictions, tier, nickname, is_member)')
+      .eq('article_slug', ARTICLE_SLUG)
+      .order('created_at', { ascending: false });
+
+    if(error){
+      console.error('Could not load comments:', error);
+      return;
+    }
+
+    const countEl = document.querySelector('.comments-count');
+    if(countEl) countEl.textContent = `${comments.length} comment${comments.length === 1 ? '' : 's'}`;
+
+    const container = document.querySelector('.comments-section');
+    // Remove any previously-rendered real comments (keeps the form intact)
+    container.querySelectorAll('.comment.real').forEach(el => el.remove());
+
+    comments.forEach(c => {
+      const p = c.profiles;
+      const record = p ? `${p.correct_predictions}-${p.incorrect_predictions}` : '0-0';
+      const tierLabel = p && p.tier
+        ? p.tier.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+        : 'Amateur';
+      const memberBadge = p && p.is_member ? '<span class="member-badge">★ Member</span>' : '';
+      const nickname = p && p.is_member && p.nickname
+        ? `<div style="font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--gold); font-weight:700; margin:2px 0 6px;">"${p.nickname}"</div>`
+        : '';
+      const when = new Date(c.created_at).toLocaleDateString();
+
+      const div = document.createElement('div');
+      div.className = 'comment real';
+      div.innerHTML = `
+        <div class="comment-avatar"></div>
+        <div>
+          <span class="comment-name">${p ? p.username : 'Unknown Fan'}</span><span class="fan-record">${record}</span><span class="fan-tier champion">${tierLabel}</span>${memberBadge}<span class="comment-time">${when}</span>
+          ${nickname}
+          <p class="comment-text"></p>
+          <div class="comment-actions"><span>Reply</span></div>
+        </div>`;
+      div.querySelector('.comment-text').textContent = c.body; // textContent avoids any HTML injection risk
+      container.insertBefore(div, container.querySelector('.comment-form').nextSibling);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', loadComments);
 </script>
 </body>
 </html>
+
